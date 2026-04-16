@@ -58,6 +58,27 @@
       "phone": "9117762335",
       "role": "student",
       "profile": {
+        "marks": 60,
+        "cgpa": 10,
+        "annualIncome": 100000,
+        "category": "General",
+        "course": "Engineering",
+        "gender": "Male",
+        "state": "Bihar",
+        "disability": false,
+        "institution": "lpu",
+        "address": "Gopalganj"
+      },
+      "createdAt": "2026-04-08T05:33:03.843Z"
+    },
+    {
+      "id": "9c152a54-6105-402a-b816-970e21a3eb13",
+      "name": "subham",
+      "email": "sanyamkashyap80@gmail.com",
+      "password": "$2a$10$yME9rNwKeP7VUaI4VezpbOS8aJyul1NBcNBpAyYPu.iv5jadvXPuy",
+      "phone": "9599079455",
+      "role": "student",
+      "profile": {
         "marks": 0,
         "cgpa": 0,
         "annualIncome": 0,
@@ -69,18 +90,18 @@
         "institution": "",
         "address": ""
       },
-      "createdAt": "2026-04-08T05:33:03.843Z"
+      "createdAt": "2026-04-16T13:36:07.546Z"
     }
   ],
   "scholarships": [
     {
-      "id": "323102ca-b657-4d7c-b281-b5b199b54bcf",
-      "name": "Girl Child Education Fund",
-      "provider": "Ministry of Women & Child Development",
-      "amount": 40000,
-      "deadline": "2025-08-01",
-      "minMarks": 65,
-      "maxIncome": 500000,
+      "id": "sch-006",
+      "name": "National Means-cum-Merit Scholarship (NMMS)",
+      "provider": "Ministry of Education",
+      "amount": 12000,
+      "deadline": "2025-09-15",
+      "minMarks": 55,
+      "maxIncome": 150000,
       "categories": [
         "General",
         "OBC",
@@ -89,60 +110,28 @@
         "EWS"
       ],
       "courses": [
-        "Engineering",
-        "Medical",
         "Science",
         "Commerce",
         "Arts"
       ],
-      "gender": "Female",
-      "location": "All India",
-      "disability": false,
-      "description": "Encouraging female students to pursue STEM education.",
-      "eligibility": "Female students, min 65%, income below ₹5 LPA",
-      "benefits": "₹40,000/year + career counseling + internship",
-      "applicants": 3101,
-      "featured": true,
-      "createdAt": "2026-04-07T03:59:53.643Z"
-    },
-    {
-      "id": "254ab453-ec5e-42fd-9967-3b42fd543660",
-      "name": "SC/ST Excellence Award",
-      "provider": "Ministry of Social Justice",
-      "amount": 50000,
-      "deadline": "2025-07-15",
-      "minMarks": 60,
-      "maxIncome": 600000,
-      "categories": [
-        "SC",
-        "ST"
-      ],
-      "courses": [
-        "Engineering",
-        "Medical",
-        "Law",
-        "Science",
-        "Arts",
-        "Commerce"
-      ],
       "gender": "All",
       "location": "All India",
       "disability": false,
-      "description": "Empowering SC/ST students with financial support.",
-      "eligibility": "SC/ST category, min 60%, income below ₹6 LPA",
-      "benefits": "₹50,000/year + hostel allowance + book grant",
-      "applicants": 2311,
+      "description": "NMMS awards scholarships to meritorious students of economically weaker sections to arrest dropout at Class 8 and encourage continuation.",
+      "eligibility": "Class 9 students, min 55% in Class 8, income below ₹1.5 LPA, govt school",
+      "benefits": "₹12,000/year (₹1,000/month) up to Class 12",
+      "applicants": 96000,
       "featured": false,
-      "createdAt": "2026-04-07T03:59:53.643Z"
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "65a19216-facc-4d21-97e8-e31a37c31b9a",
-      "name": "Rural Talent Development Fund",
-      "provider": "Ministry of Rural Development",
-      "amount": 25000,
-      "deadline": "2025-08-15",
-      "minMarks": 60,
-      "maxIncome": 250000,
+      "id": "sch-004",
+      "name": "Central Sector Scheme of Scholarship (CSSS)",
+      "provider": "Ministry of Education",
+      "amount": 20000,
+      "deadline": "2025-10-31",
+      "minMarks": 80,
+      "maxIncome": 800000,
       "categories": [
         "General",
         "OBC",
@@ -159,24 +148,114 @@
         "Law"
       ],
       "gender": "All",
-      "location": "Rural India",
+      "location": "All India",
       "disability": false,
-      "description": "Supporting talented rural students.",
-      "eligibility": "Rural domicile, min 60%, income below ₹2.5 LPA",
-      "benefits": "₹25,000/year + digital device + internet allowance",
-      "applicants": 2100,
-      "featured": false,
-      "createdAt": "2026-04-07T03:59:53.644Z"
+      "description": "Central Sector Scheme for top 20 percentile students of Class 12 board exams pursuing regular courses at college/university level.",
+      "eligibility": "Top 20 percentile in Class 12 board, income below ₹8 LPA, regular UG/PG course",
+      "benefits": "₹10,000/year (UG) to ₹20,000/year (PG) renewable on performance",
+      "applicants": 82000,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "2c9d73ba-b693-41bf-82e0-24cfb81803ac",
-      "name": "OBC Central Sector Scholarship",
-      "provider": "Ministry of Social Justice",
-      "amount": 30000,
-      "deadline": "2025-07-20",
-      "minMarks": 65,
-      "maxIncome": 450000,
+      "id": "sch-020",
+      "name": "NSP Pre-Matric Scholarship for SC Students",
+      "provider": "Ministry of Social Justice & Empowerment",
+      "amount": 3500,
+      "deadline": "2025-10-31",
+      "minMarks": 55,
+      "maxIncome": 250000,
       "categories": [
+        "SC"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Pre-Matric Scholarship for SC students studying in Class 9 and 10. Provided to reduce dropout rates among SC students.",
+      "eligibility": "SC category students in Class 9-10, family income below ₹2.5 LPA",
+      "benefits": "₹3,500/year maintenance allowance + book grant ₹750",
+      "applicants": 45200,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-001",
+      "name": "NSP Post-Matric Scholarship for SC Students",
+      "provider": "Ministry of Social Justice & Empowerment",
+      "amount": 23000,
+      "deadline": "2025-11-30",
+      "minMarks": 60,
+      "maxIncome": 250000,
+      "categories": [
+        "SC"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law",
+        "Pharmacy"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Post-Matric Scholarship for SC students pursuing higher education. One of India's largest scholarship schemes covering tuition and maintenance.",
+      "eligibility": "SC category, post-matric level, family income below ₹2.5 LPA",
+      "benefits": "Full tuition fee + ₹23,000/year maintenance allowance",
+      "applicants": 38900,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-002",
+      "name": "NSP Post-Matric Scholarship for ST Students",
+      "provider": "Ministry of Tribal Affairs",
+      "amount": 23000,
+      "deadline": "2025-11-30",
+      "minMarks": 60,
+      "maxIncome": 250000,
+      "categories": [
+        "ST"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law",
+        "Pharmacy"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Post-Matric Scholarship for ST students to support higher education and reduce financial barriers for tribal communities.",
+      "eligibility": "ST category, post-matric level, family income below ₹2.5 LPA",
+      "benefits": "Full tuition fee + ₹23,000/year maintenance allowance + book grant",
+      "applicants": 29400,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-011",
+      "name": "Post-Matric Scholarship for Minorities",
+      "provider": "Ministry of Minority Affairs",
+      "amount": 30000,
+      "deadline": "2025-10-15",
+      "minMarks": 50,
+      "maxIncome": 200000,
+      "categories": [
+        "General",
         "OBC"
       ],
       "courses": [
@@ -185,26 +264,57 @@
         "Science",
         "Commerce",
         "Arts",
+        "Law",
         "Pharmacy"
       ],
       "gender": "All",
       "location": "All India",
       "disability": false,
-      "description": "Dedicated scholarship for OBC students.",
-      "eligibility": "OBC category, min 65%, income below ₹4.5 LPA",
-      "benefits": "₹30,000/year + coaching assistance",
-      "applicants": 1891,
+      "description": "Post-Matric Scholarship for students from minority communities (Muslim, Christian, Sikh, Buddhist, Jain, Zoroastrian) pursuing post-matric courses.",
+      "eligibility": "Minority community, post-matric level, min 50%, income below ₹2 LPA",
+      "benefits": "Full course fee + ₹30,000/year maintenance allowance",
+      "applicants": 22600,
       "featured": false,
-      "createdAt": "2026-04-07T03:59:53.643Z"
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "c6439993-741b-49c3-8303-be7f38219517",
-      "name": "PM National Merit Scholarship",
-      "provider": "Ministry of Education",
-      "amount": 75000,
-      "deadline": "2025-06-30",
-      "minMarks": 80,
-      "maxIncome": 800000,
+      "id": "sch-003",
+      "name": "PM YASASVI Scholarship Scheme",
+      "provider": "Ministry of Social Justice & Empowerment",
+      "amount": 125000,
+      "deadline": "2025-12-15",
+      "minMarks": 60,
+      "maxIncome": 250000,
+      "categories": [
+        "OBC",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "PM Young Achievers Scholarship Award Scheme for Vibrant India for OBC, EBC and DNT students. Flagship scheme replacing old OBC scholarships.",
+      "eligibility": "OBC/EBC/DNT category, Class 9 to UG level, income below ₹2.5 LPA",
+      "benefits": "₹75,000–₹1,25,000/year based on level + hostel allowance",
+      "applicants": 18700,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-012",
+      "name": "Merit-cum-Means Scholarship for Minorities",
+      "provider": "Ministry of Minority Affairs",
+      "amount": 30000,
+      "deadline": "2025-10-15",
+      "minMarks": 50,
+      "maxIncome": 250000,
       "categories": [
         "General",
         "OBC"
@@ -212,54 +322,62 @@
       "courses": [
         "Engineering",
         "Medical",
-        "Science"
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law",
+        "Pharmacy"
       ],
       "gender": "All",
       "location": "All India",
       "disability": false,
-      "description": "Flagship merit scholarship for academically excellent students.",
-      "eligibility": "Min 80% in Class 12, family income below ₹8 LPA",
-      "benefits": "₹75,000/year + laptop allowance + mentorship",
-      "applicants": 1240,
-      "featured": true,
-      "createdAt": "2026-04-07T03:59:53.643Z"
+      "description": "Merit-cum-Means Scholarship for minority students pursuing professional and technical courses at UG and PG level.",
+      "eligibility": "Minority community, professional/technical UG-PG, min 50%, income below ₹2.5 LPA",
+      "benefits": "Full course fee (up to ₹20,000) + ₹10,000/year maintenance",
+      "applicants": 16800,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "d57592e4-86c0-46af-8f04-2d0c9e371142",
-      "name": "Minority Education Empowerment",
-      "provider": "Ministry of Minority Affairs",
-      "amount": 42000,
-      "deadline": "2025-08-30",
-      "minMarks": 60,
-      "maxIncome": 500000,
+      "id": "sch-005",
+      "name": "Begum Hazrat Mahal National Scholarship",
+      "provider": "Maulana Azad Education Foundation",
+      "amount": 12000,
+      "deadline": "2025-09-30",
+      "minMarks": 50,
+      "maxIncome": 200000,
       "categories": [
-        "General"
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
       ],
       "courses": [
         "Engineering",
         "Medical",
-        "Law",
         "Science",
         "Commerce",
-        "Arts"
+        "Arts",
+        "Law"
       ],
-      "gender": "All",
+      "gender": "Female",
       "location": "All India",
       "disability": false,
-      "description": "Financial empowerment for minority community students.",
-      "eligibility": "Minority certificate, min 60%, income below ₹5 LPA",
-      "benefits": "₹42,000/year + vocational training + placement",
-      "applicants": 920,
+      "description": "Scholarship for meritorious girls from minority communities (Muslim, Christian, Sikh, Buddhist, Jain, Zoroastrian) studying in Class 9-12.",
+      "eligibility": "Minority community girls, Class 9-12, min 50%, income below ₹2 LPA",
+      "benefits": "₹5,000 (Class 9-10) to ₹6,000 (Class 11-12) per year",
+      "applicants": 14300,
       "featured": false,
-      "createdAt": "2026-04-07T03:59:53.644Z"
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "0e764b86-a0a2-4039-9f39-ad0a43f83d1a",
-      "name": "EWS Higher Education Grant",
-      "provider": "Ministry of Finance",
-      "amount": 35000,
-      "deadline": "2025-05-30",
-      "minMarks": 70,
+      "id": "sch-013",
+      "name": "Dr. Ambedkar Post-Matric Scholarship (EBC)",
+      "provider": "Ministry of Social Justice & Empowerment",
+      "amount": 23000,
+      "deadline": "2025-11-30",
+      "minMarks": 55,
       "maxIncome": 300000,
       "categories": [
         "EWS"
@@ -267,87 +385,30 @@
       "courses": [
         "Engineering",
         "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
         "Law",
-        "Science",
-        "Commerce"
+        "Pharmacy"
       ],
       "gender": "All",
       "location": "All India",
       "disability": false,
-      "description": "Financial assistance for economically weaker sections.",
-      "eligibility": "EWS certificate, min 70%, income below ₹3 LPA",
-      "benefits": "₹35,000/year + exam fee reimbursement",
-      "applicants": 870,
+      "description": "Dr. Ambedkar Post-Matric Scholarship for Economically Backward Classes students to pursue higher education.",
+      "eligibility": "EBC category (non-SC/ST/OBC), post-matric, income below ₹3 LPA",
+      "benefits": "Full tuition fee + ₹23,000/year maintenance allowance",
+      "applicants": 12400,
       "featured": false,
-      "createdAt": "2026-04-07T03:59:53.643Z"
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "4903c54f-d811-4074-9002-f1e8786362c7",
-      "name": "North-East Special Initiative",
-      "provider": "Ministry of NE Region",
-      "amount": 45000,
-      "deadline": "2025-06-15",
+      "id": "sch-008",
+      "name": "Pragati Scholarship for Girl Students (AICTE)",
+      "provider": "All India Council for Technical Education",
+      "amount": 50000,
+      "deadline": "2025-12-31",
       "minMarks": 60,
-      "maxIncome": 700000,
-      "categories": [
-        "General",
-        "OBC",
-        "SC",
-        "ST"
-      ],
-      "courses": [
-        "Engineering",
-        "Medical",
-        "Science",
-        "Commerce",
-        "Arts"
-      ],
-      "gender": "All",
-      "location": "North-East India",
-      "disability": false,
-      "description": "Promoting education in North-Eastern states.",
-      "eligibility": "NE state resident, min 60%, income below ₹7 LPA",
-      "benefits": "₹45,000/year + travel allowance",
-      "applicants": 560,
-      "featured": false,
-      "createdAt": "2026-04-07T03:59:53.643Z"
-    },
-    {
-      "id": "9038ff34-bf8a-4be4-9688-b369e01a6da5",
-      "name": "Pharmaceutical Sciences Grant",
-      "provider": "Ministry of Health",
-      "amount": 48000,
-      "deadline": "2025-09-15",
-      "minMarks": 72,
-      "maxIncome": 550000,
-      "categories": [
-        "General",
-        "OBC",
-        "SC",
-        "ST"
-      ],
-      "courses": [
-        "Pharmacy",
-        "Medical"
-      ],
-      "gender": "All",
-      "location": "All India",
-      "disability": false,
-      "description": "Supporting future healthcare professionals.",
-      "eligibility": "B.Pharma or MBBS, min 72%, income below ₹5.5 LPA",
-      "benefits": "₹48,000/year + lab fee waiver + hospital internship",
-      "applicants": 490,
-      "featured": false,
-      "createdAt": "2026-04-07T03:59:53.644Z"
-    },
-    {
-      "id": "44b22d00-2d05-4fbb-bdad-86a577b8a8f7",
-      "name": "Disability Welfare Scholarship",
-      "provider": "Dept of Empowerment of PwD",
-      "amount": 60000,
-      "deadline": "2025-09-01",
-      "minMarks": 50,
-      "maxIncome": 900000,
+      "maxIncome": 800000,
       "categories": [
         "General",
         "OBC",
@@ -357,59 +418,25 @@
       ],
       "courses": [
         "Engineering",
-        "Medical",
-        "Science",
-        "Commerce",
-        "Arts",
-        "Law"
+        "Pharmacy"
       ],
-      "gender": "All",
-      "location": "All India",
-      "disability": true,
-      "description": "Supporting differently-abled students.",
-      "eligibility": "Disability certificate (min 40%), any course",
-      "benefits": "₹60,000/year + assistive devices + priority placement",
-      "applicants": 430,
-      "featured": false,
-      "createdAt": "2026-04-07T03:59:53.643Z"
-    },
-    {
-      "id": "8b73be42-8746-4e13-ac5a-4e364eac4cac",
-      "name": "Arts & Culture Preservation Award",
-      "provider": "Ministry of Culture",
-      "amount": 20000,
-      "deadline": "2025-06-01",
-      "minMarks": 55,
-      "maxIncome": 400000,
-      "categories": [
-        "General",
-        "OBC",
-        "SC",
-        "ST",
-        "EWS"
-      ],
-      "courses": [
-        "Arts",
-        "Fine Arts",
-        "Music"
-      ],
-      "gender": "All",
+      "gender": "Female",
       "location": "All India",
       "disability": false,
-      "description": "Preserving India's rich cultural heritage.",
-      "eligibility": "Arts/cultural program, min 55%, income below ₹4 LPA",
-      "benefits": "₹20,000/year + exhibition + cultural tour",
-      "applicants": 380,
-      "featured": false,
-      "createdAt": "2026-04-07T03:59:53.644Z"
+      "description": "AICTE Pragati Scholarship to provide assistance to girl students pursuing technical education (Degree/Diploma) to advance their career.",
+      "eligibility": "Girl students in AICTE-approved technical institutions, income below ₹8 LPA",
+      "benefits": "₹50,000/year + ₹2,000/month contingency for 10 months",
+      "applicants": 11200,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "66503cb1-423d-43fb-8f09-ac9f9dc1d92c",
-      "name": "STEM Innovators Award",
+      "id": "sch-010",
+      "name": "INSPIRE Scholarship for Higher Education (SHE)",
       "provider": "Department of Science & Technology",
-      "amount": 100000,
-      "deadline": "2025-10-01",
-      "minMarks": 90,
+      "amount": 80000,
+      "deadline": "2026-01-31",
+      "minMarks": 85,
       "maxIncome": 1200000,
       "categories": [
         "General",
@@ -419,54 +446,86 @@
         "EWS"
       ],
       "courses": [
-        "Engineering",
         "Science"
       ],
       "gender": "All",
       "location": "All India",
       "disability": false,
-      "description": "Rewarding top STEM performers for research-oriented education.",
-      "eligibility": "Min 90% in PCM/B, top-tier institution",
-      "benefits": "₹1,00,000/year + research grant + mentorship",
-      "applicants": 320,
+      "description": "INSPIRE-SHE scholarship for students pursuing Natural & Basic Sciences at B.Sc/M.Sc level. Aims to attract talent to science research.",
+      "eligibility": "Top 1% in Class 12 board OR top ranks in JEE/NEET, pursuing B.Sc/M.Sc Natural Sciences",
+      "benefits": "₹80,000/year for 5 years + ₹20,000 summer research attachment",
+      "applicants": 9800,
       "featured": true,
-      "createdAt": "2026-04-07T03:59:53.643Z"
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "f6296eb2-4eae-4baa-98c5-ef4660284ac9",
-      "name": "Legal Education Scholarship",
-      "provider": "Bar Council of India",
-      "amount": 55000,
-      "deadline": "2025-07-30",
-      "minMarks": 70,
+      "id": "sch-016",
+      "name": "National Fellowship for Higher Education of ST Students",
+      "provider": "Ministry of Tribal Affairs",
+      "amount": 40000,
+      "deadline": "2025-11-30",
+      "minMarks": 60,
       "maxIncome": 600000,
       "categories": [
-        "General",
-        "OBC",
-        "SC",
-        "ST",
-        "EWS"
+        "ST"
       ],
       "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
         "Law"
       ],
       "gender": "All",
       "location": "All India",
       "disability": false,
-      "description": "Access to legal education for meritorious students.",
-      "eligibility": "Recognized Law school, min 70%, income below ₹6 LPA",
-      "benefits": "₹55,000/year + moot court coaching + placement",
-      "applicants": 210,
+      "description": "Scholarship for ST students pursuing higher education in top institutions like IITs, NITs, IIMs, AIIMS etc.",
+      "eligibility": "ST category, admitted to top central institutions, income below ₹6 LPA",
+      "benefits": "₹40,000/year + full tuition fee waiver at select institutions",
+      "applicants": 8900,
       "featured": false,
-      "createdAt": "2026-04-07T03:59:53.644Z"
+      "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
-      "id": "3c4f0a1a-4acf-43b6-9537-5a3baa30a0a1",
-      "name": "Sports Achievers Scholarship",
-      "provider": "Ministry of Youth Affairs & Sports",
-      "amount": 80000,
-      "deadline": "2025-11-01",
-      "minMarks": 50,
+      "id": "sch-007",
+      "name": "Ishan Uday Special Scholarship (NE Region)",
+      "provider": "University Grants Commission (UGC)",
+      "amount": 54000,
+      "deadline": "2025-11-15",
+      "minMarks": 60,
+      "maxIncome": 450000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law"
+      ],
+      "gender": "All",
+      "location": "North-East India",
+      "disability": false,
+      "description": "Special scholarship for students domiciled in North-Eastern states pursuing general degree courses in colleges/universities outside NE region.",
+      "eligibility": "NE state domicile, pursuing UG outside NE, income below ₹4.5 LPA",
+      "benefits": "₹54,000/year for general courses, ₹1,32,000/year for technical/medical",
+      "applicants": 7800,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-015",
+      "name": "Indira Gandhi Scholarship for Single Girl Child (UGC)",
+      "provider": "University Grants Commission (UGC)",
+      "amount": 36200,
+      "deadline": "2025-12-31",
+      "minMarks": 60,
       "maxIncome": 1000000,
       "categories": [
         "General",
@@ -476,50 +535,207 @@
         "EWS"
       ],
       "courses": [
-        "Sports Management",
-        "Physical Education",
         "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law"
+      ],
+      "gender": "Female",
+      "location": "All India",
+      "disability": false,
+      "description": "UGC scholarship to promote higher education among single girl child. Recognizes the value of the girl child and promotes her education at PG level.",
+      "eligibility": "Single girl child of parents, pursuing PG course, age below 30 years",
+      "benefits": "₹3,100/month for 2 years of PG course",
+      "applicants": 7200,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-014",
+      "name": "Kishore Vaigyanik Protsahan Yojana (KVPY)",
+      "provider": "Indian Institute of Science (IISc)",
+      "amount": 84000,
+      "deadline": "2025-09-30",
+      "minMarks": 75,
+      "maxIncome": 1500000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Science"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "KVPY is a national fellowship to identify and encourage talented students with aptitude for research in Basic Sciences.",
+      "eligibility": "Class 11/12 or 1st year B.Sc/B.S students, min 75% in Science & Maths",
+      "benefits": "₹5,000–₹7,000/month fellowship + ₹20,000–₹28,000/year contingency",
+      "applicants": 5600,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-018",
+      "name": "Disability Scholarship — NHFDC",
+      "provider": "National Handicapped Finance & Development Corporation",
+      "amount": 60000,
+      "deadline": "2025-12-31",
+      "minMarks": 50,
+      "maxIncome": 300000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law",
+        "Pharmacy"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": true,
+      "description": "Scholarship for students with disabilities pursuing higher education. Covers tuition, maintenance and special assistance.",
+      "eligibility": "40%+ disability certificate, pursuing higher education, income below ₹3 LPA",
+      "benefits": "₹60,000/year + assistive device allowance + reader allowance",
+      "applicants": 4800,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-009",
+      "name": "Saksham Scholarship for Differently Abled (AICTE)",
+      "provider": "All India Council for Technical Education",
+      "amount": 50000,
+      "deadline": "2025-12-31",
+      "minMarks": 60,
+      "maxIncome": 800000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Pharmacy"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": true,
+      "description": "AICTE Saksham Scholarship for specially-abled students pursuing technical education to provide financial support and encourage inclusion.",
+      "eligibility": "40%+ disability certificate, AICTE-approved institution, income below ₹8 LPA",
+      "benefits": "₹50,000/year + ₹2,000/month contingency for 10 months",
+      "applicants": 3401,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-019",
+      "name": "Maulana Azad National Fellowship (MANF)",
+      "provider": "Ministry of Minority Affairs",
+      "amount": 312000,
+      "deadline": "2025-10-31",
+      "minMarks": 55,
+      "maxIncome": 600000,
+      "categories": [
+        "General",
+        "OBC"
+      ],
+      "courses": [
+        "Science",
+        "Arts",
+        "Commerce"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Fellowship for minority students pursuing M.Phil and Ph.D. Provides integrated five-year fellowships in sciences, humanities and social sciences.",
+      "eligibility": "Minority community, pursuing M.Phil/Ph.D, UGC-NET qualified, income below ₹6 LPA",
+      "benefits": "₹31,000/month (JRF) + ₹35,000/month (SRF) + HRA + contingency",
+      "applicants": 3100,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-017",
+      "name": "Swanath Scholarship — Orphans & Armed Forces (AICTE)",
+      "provider": "All India Council for Technical Education",
+      "amount": 50000,
+      "deadline": "2025-12-31",
+      "minMarks": 60,
+      "maxIncome": 800000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Pharmacy"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "AICTE Swanath Scholarship for orphans, wards of armed forces/paramilitary/state police martyrs pursuing technical education.",
+      "eligibility": "Orphan or ward of armed forces martyr, AICTE-approved institution",
+      "benefits": "₹50,000/year + ₹2,000/month contingency",
+      "applicants": 2100,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "5fce0cb2-acd6-459c-94a6-fa5e5e77ec64",
+      "applicants": 0,
+      "createdAt": "2026-04-16T13:06:57.199Z",
+      "name": "BCA Merit Scholarship",
+      "provider": "Ministry of Education",
+      "amount": 50000,
+      "deadline": "2026-06-30",
+      "minMarks": 70,
+      "maxIncome": 300000,
+      "categories": [
+        "General",
+        "OBC",
+        "EWS"
+      ],
+      "courses": [
         "Science",
         "Commerce"
       ],
       "gender": "All",
       "location": "All India",
       "disability": false,
-      "description": "For national/state level athletes.",
-      "eligibility": "Sports achievement + min 50% marks",
-      "benefits": "₹80,000/year + coaching + equipment allowance",
-      "applicants": 150,
-      "featured": true,
-      "createdAt": "2026-04-07T03:59:53.644Z"
+      "description": "Scholarship for BCA and similar undergraduate students with good academic performance.",
+      "eligibility": "Minimum 70% marks\nFamily income less than 3 lakh\nMust be pursuing BCA or similar course",
+      "benefits": "₹50,000 per year\nTuition fee support",
+      "featured": true
     }
   ],
   "applications": [
     {
-      "id": "b6b4f62d-a74f-4821-afea-fe593bfda053",
+      "id": "8a772e8c-ac6a-43ce-849f-1f914db085f6",
       "studentId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
-      "scholarshipId": "323102ca-b657-4d7c-b281-b5b199b54bcf",
+      "scholarshipId": "sch-009",
       "status": "approved",
       "reviewNote": "",
-      "appliedAt": "2026-04-08T05:55:49.696Z",
-      "updatedAt": "2026-04-09T06:33:24.894Z"
-    },
-    {
-      "id": "f73435ca-6139-4ba7-bd16-de16968bde95",
-      "studentId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
-      "scholarshipId": "254ab453-ec5e-42fd-9967-3b42fd543660",
-      "status": "approved",
-      "reviewNote": "",
-      "appliedAt": "2026-04-09T06:31:51.667Z",
-      "updatedAt": "2026-04-09T06:33:30.033Z"
-    },
-    {
-      "id": "8a609755-987f-4c2d-916d-e12c805cb5bf",
-      "studentId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
-      "scholarshipId": "2c9d73ba-b693-41bf-82e0-24cfb81803ac",
-      "status": "approved",
-      "reviewNote": "",
-      "appliedAt": "2026-04-09T12:30:52.394Z",
-      "updatedAt": "2026-04-09T12:33:52.576Z"
+      "appliedAt": "2026-04-16T12:49:53.442Z",
+      "updatedAt": "2026-04-16T12:51:30.063Z"
     }
   ],
   "notifications": [
@@ -551,58 +767,31 @@
       "createdAt": "2026-04-08T05:33:03.844Z"
     },
     {
-      "id": "557d1375-3f0b-4cd1-9c58-e0d8bca6a9a9",
+      "id": "eb0e184c-361c-4cc6-af8b-219ac80f1d5f",
       "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
       "title": "Application Submitted ✅",
-      "message": "Your application for \"Girl Child Education Fund\" has been submitted successfully.",
+      "message": "Your application for \"Saksham Scholarship for Differently Abled (AICTE)\" has been submitted successfully.",
       "type": "success",
       "read": false,
-      "createdAt": "2026-04-08T05:55:49.697Z"
+      "createdAt": "2026-04-16T12:49:53.443Z"
     },
     {
-      "id": "9409fc6a-d9bc-4863-b679-9e99f21ff51c",
-      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
-      "title": "Application Submitted ✅",
-      "message": "Your application for \"SC/ST Excellence Award\" has been submitted successfully.",
-      "type": "success",
-      "read": false,
-      "createdAt": "2026-04-09T06:31:51.668Z"
-    },
-    {
-      "id": "c0296613-909e-4320-b5d3-e89f7431b1e6",
+      "id": "3d4ce2a6-9eea-4055-bc70-7f846f1434a8",
       "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
       "title": "Application Approved",
-      "message": "🎉 Congratulations! Your application for \"Girl Child Education Fund\" has been APPROVED!",
+      "message": "🎉 Congratulations! Your application for \"Saksham Scholarship for Differently Abled (AICTE)\" has been APPROVED!",
       "type": "success",
       "read": false,
-      "createdAt": "2026-04-09T06:33:24.895Z"
+      "createdAt": "2026-04-16T12:51:30.063Z"
     },
     {
-      "id": "73d28746-a492-43fa-884e-35d4b9d3cafd",
-      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
-      "title": "Application Approved",
-      "message": "🎉 Congratulations! Your application for \"SC/ST Excellence Award\" has been APPROVED!",
-      "type": "success",
+      "id": "70a6cb7c-445e-402d-8daf-c6086c994bc0",
+      "userId": "9c152a54-6105-402a-b816-970e21a3eb13",
+      "title": "Welcome to NSMP! 🎓",
+      "message": "Complete your profile to get AI-powered scholarship recommendations.",
+      "type": "info",
       "read": false,
-      "createdAt": "2026-04-09T06:33:30.034Z"
-    },
-    {
-      "id": "b6ba9901-1fdb-4e00-9333-9f34a3b44215",
-      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
-      "title": "Application Submitted ✅",
-      "message": "Your application for \"OBC Central Sector Scholarship\" has been submitted successfully.",
-      "type": "success",
-      "read": false,
-      "createdAt": "2026-04-09T12:30:52.394Z"
-    },
-    {
-      "id": "6faadf0c-d263-455a-9a81-54dd2599a5df",
-      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
-      "title": "Application Approved",
-      "message": "🎉 Congratulations! Your application for \"OBC Central Sector Scholarship\" has been APPROVED!",
-      "type": "success",
-      "read": false,
-      "createdAt": "2026-04-09T12:33:52.576Z"
+      "createdAt": "2026-04-16T13:36:07.547Z"
     }
   ]
 }

@@ -90,8 +90,13 @@ export function Register() {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post('/auth/send-otp', form);
-      toast.success('OTP sent to your email! 📧');
+      const res = await api.post('/auth/send-otp', form);
+      if (res.data.demoOtp) {
+        setOtp(res.data.demoOtp);
+        toast('📋 Email delivery failed. OTP auto-filled: ' + res.data.demoOtp, { duration: 8000, icon: '⚠️' });
+      } else {
+        toast.success('OTP sent to your email! 📧');
+      }
       setStep(2);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to send OTP');

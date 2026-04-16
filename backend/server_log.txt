@@ -1,0 +1,10 @@
+✅ Data loaded — 4 users, 1 applications
+
+🎓 NSMP Backend running at http://localhost:5000
+📊 API Docs: http://localhost:5000/api/health
+
+🔐 Admin credentials: admin@nsmp.gov.in / admin123
+
+✅ OTP email sent to: sanyamkashayap80@gmail.com
+✅ OTP email sent to: sanyamkashyap80@gmail.com
+✅ Welcome email sent to: sanyamkashyap80@gmail.com

@@ -1333,4 +1333,5 @@ body {
 }
 
 /* ── Bubble bg fix for landing ── */
-.lp-root .bubble-bg { position: fixed; z-index: 0; }
+.lp-root .bubble-bg { position: absolute; z-index: 0; }
+.lp-root { isolation: isolate; }

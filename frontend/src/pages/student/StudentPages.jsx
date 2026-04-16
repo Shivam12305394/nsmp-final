@@ -226,6 +226,7 @@ export function StudentProfile() {
   const { user, updateUser } = useAuth();
   const [form, setForm] = useState({ name: user?.name || '', phone: user?.phone || '', profile: { ...user?.profile } });
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const upd = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const updP = (k, v) => setForm((f) => ({ ...f, profile: { ...f.profile, [k]: v } }));
@@ -236,6 +237,7 @@ export function StudentProfile() {
       const res = await authAPI.updateProfile(form);
       updateUser(res.data);
       toast.success('Profile saved successfully!');
+      setSaved(true);
     } catch {
       toast.error('Failed to save profile');
     }
@@ -345,6 +347,18 @@ export function StudentProfile() {
           <button className="btn btn-primary btn-lg" onClick={save} disabled={saving}>
             {saving ? <><Spinner size={18} color="#fff" /> Saving...</> : '💾 Save Profile'}
           </button>
+
+          {/* Post-save nudge */}
+          {saved && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: 12, padding: '14px 18px', animation: 'fadeInUp 0.4s var(--ease-out) both' }}>
+              <span style={{ fontSize: 22 }}>🎉</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, color: 'var(--emerald)', fontSize: 14 }}>Profile updated!</div>
+                <div style={{ fontSize: 12.5, color: 'var(--text2)', marginTop: 2 }}>Your AI matches have been recalculated based on your new profile.</div>
+              </div>
+              <a href="/matches" className="btn btn-emerald btn-sm">🤖 View My Matches →</a>
+            </div>
+          )}
         </div>
 
         {/* Sidebar: Completion */}

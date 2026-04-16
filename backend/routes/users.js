@@ -13,18 +13,18 @@ router.get('/notifications', authMiddleware, (req, res) => {
   res.json(notifs);
 });
 
+// PATCH /api/users/notifications/read-all  ← must be BEFORE /:id/read
+router.patch('/notifications/read-all', authMiddleware, (req, res) => {
+  db.notifications.filter((n) => n.userId === req.user.id).forEach((n) => { n.read = true; });
+  res.json({ message: 'All marked as read' });
+});
+
 // PATCH /api/users/notifications/:id/read
 router.patch('/notifications/:id/read', authMiddleware, (req, res) => {
   const notif = db.notifications.find((n) => n.id === req.params.id && n.userId === req.user.id);
   if (!notif) return res.status(404).json({ message: 'Notification not found' });
   notif.read = true;
   res.json(notif);
-});
-
-// PATCH /api/users/notifications/read-all
-router.patch('/notifications/read-all', authMiddleware, (req, res) => {
-  db.notifications.filter((n) => n.userId === req.user.id).forEach((n) => { n.read = true; });
-  res.json({ message: 'All marked as read' });
 });
 
 // ── ADMIN USER MANAGEMENT ──
