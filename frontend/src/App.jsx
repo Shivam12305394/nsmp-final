@@ -83,9 +83,9 @@ function AppRoutes() {
 export default function App() {
   const [splashDone, setSplashDone] = useState(false);
   return (
-    <>
+    <AuthProvider>
       {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
-      <AuthProvider><AppRoutes /></AuthProvider>
-    </>
+      {splashDone && <AppRoutes />}
+    </AuthProvider>
   );
 }

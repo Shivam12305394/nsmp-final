@@ -207,9 +207,11 @@ export function AppLayout({ children, title, subtitle }) {
 
   return (
     <div className="app-layout" style={{ position: 'relative' }}>
-      <BubbleBackground />
+      <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
+        <BubbleBackground />
+      </div>
       <Sidebar mobileOpen={menuOpen} onClose={() => setMenuOpen(false)} />
-      <div className="main-area">
+      <div className="main-area" style={{ position: 'relative', zIndex: 1 }}>
         <Topbar title={title} subtitle={subtitle} onMenuClick={() => setMenuOpen((v) => !v)} />
         <main className="page-content">{children}</main>
       </div>
