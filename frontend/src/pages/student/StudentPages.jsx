@@ -51,6 +51,10 @@ export function SmartMatches() {
     setStratLoading(false);
   };
 
+  const strongMatches = matches.filter((m) => m.matchScore >= 85).length;
+  const appliedCount = matches.filter((m) => appliedIds.has(m.id)).length;
+  const readyToApply = matches.filter((m) => !appliedIds.has(m.id)).length;
+
   return (
     <AppLayout title="AI Smart Matches" subtitle="Scholarships ranked by compatibility with your profile">
       {loading ? (
@@ -58,23 +62,49 @@ export function SmartMatches() {
       ) : matches.length === 0 ? (
         <EmptyState icon="🤖" title="No matches found" sub="Complete your profile with marks, category and course to get AI recommendations" />
       ) : (
-        <>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-            <div style={{ background: 'var(--primary-dim)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 10, padding: '12px 18px', display: 'flex', alignItems: 'center', gap: 10 }}>
-              <span style={{ fontSize: 20 }}>✦</span>
+        <div className="smart-shell">
+          <div className="smart-hero card">
+            <div className="smart-hero-body">
               <div>
-                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'var(--primary-h)' }}>{matches.length} Scholarship Matches Found</div>
-                <div style={{ fontSize: 12, color: 'var(--text2)' }}>Ranked by AI compatibility score</div>
+                <div className="smart-hero-eyebrow">AI Matching Engine</div>
+                <div className="smart-hero-title">Your best-fit scholarships are ranked and ready to act on.</div>
+                <div className="smart-hero-copy">
+                  Review high-confidence opportunities first, understand why they fit, and generate an AI application strategy in one place.
+                </div>
+              </div>
+
+              <div className="smart-hero-side">
+                <div className="smart-summary-chip">
+                  <span style={{ fontSize: 20 }}>✦</span>
+                  <div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'var(--primary-h)' }}>{matches.length} Scholarship Matches Found</div>
+                    <div style={{ fontSize: 12, color: 'var(--text2)' }}>Ranked by AI compatibility score</div>
+                  </div>
+                </div>
+                <div className="smart-hero-metrics">
+                  <div className="smart-hero-stat">
+                    <div className="smart-hero-stat-value">{strongMatches}</div>
+                    <div className="smart-hero-stat-label">Strong Fits</div>
+                  </div>
+                  <div className="smart-hero-stat">
+                    <div className="smart-hero-stat-value">{readyToApply}</div>
+                    <div className="smart-hero-stat-label">Ready To Apply</div>
+                  </div>
+                  <div className="smart-hero-stat">
+                    <div className="smart-hero-stat-value">{appliedCount}</div>
+                    <div className="smart-hero-stat-label">Already Applied</div>
+                  </div>
+                </div>
+                <button className="btn btn-primary" onClick={getStrategy} disabled={stratLoading}>
+                  {stratLoading ? <><Spinner size={16} color="#fff" /> Analyzing...</> : '🤖 Get AI Strategy'}
+                </button>
               </div>
             </div>
-            <button className="btn btn-primary" onClick={getStrategy} disabled={stratLoading}>
-              {stratLoading ? <><Spinner size={16} color="#fff" /> Analyzing...</> : '🤖 Get AI Strategy'}
-            </button>
           </div>
 
           {strategy && (
-            <div style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(14,165,233,0.05))', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 14, padding: '20px 24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, var(--violet), var(--teal))' }} />
+            <div className="smart-strategy-card">
+              <div className="smart-strategy-line" />
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
                 <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(99,102,241,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🤖</div>
                 <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'var(--primary-h)' }}>Your Personalized AI Strategy</div>
@@ -83,16 +113,25 @@ export function SmartMatches() {
             </div>
           )}
 
+          <div className="smart-results-head">
+            <div>
+              <div className="smart-results-title">Prioritized Match List</div>
+              <div className="smart-results-sub">
+                Start with the highest compatibility scholarships, then review the supporting fit reasons before applying.
+              </div>
+            </div>
+          </div>
+
           <div className="scholarship-grid">
             {matches.map((m, i) => (
-              <div key={m.id} style={{ position: 'relative' }}>
-                {i === 0 && <div style={{ position: 'absolute', top: -10, left: 16, zIndex: 2, background: 'linear-gradient(90deg, var(--amber), #F97316)', color: '#000', fontSize: 10, fontWeight: 800, padding: '3px 12px', borderRadius: 99, letterSpacing: 0.5 }}>🏆 BEST MATCH</div>}
-                <div style={{ background: 'var(--bg1)', border: `1px solid ${i === 0 ? 'rgba(99,102,241,0.4)' : 'var(--border)'}`, borderRadius: 20, padding: 20, display: 'flex', flexDirection: 'column', gap: 14, marginTop: i === 0 ? 8 : 0 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div key={m.id} className="smart-card-wrap">
+                {i === 0 && <div className="smart-best-badge">🏆 Best Match</div>}
+                <div className={`smart-match-card${i === 0 ? ' is-featured' : ''}`}>
+                  <div className="smart-match-top">
                     <div>
-                      <div style={{ fontSize: 22, fontWeight: 900, fontFamily: 'var(--font-display)', background: 'linear-gradient(135deg, #10B981, #38BDF8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>₹{m.amount.toLocaleString('en-IN')}</div>
-                      <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, marginTop: 2 }}>{m.name}</div>
-                      <div style={{ fontSize: 12, color: 'var(--text3)' }}>{m.provider}</div>
+                      <div className="smart-match-amount">₹{m.amount.toLocaleString('en-IN')}</div>
+                      <div className="smart-match-name">{m.name}</div>
+                      <div className="smart-match-provider">{m.provider}</div>
                     </div>
                     <MatchRing score={m.matchScore} size={56} />
                   </div>
@@ -103,7 +142,10 @@ export function SmartMatches() {
                     </div>
                   )}
 
-                  <div style={{ paddingTop: 12, borderTop: '1px solid var(--border)', display: 'flex', gap: 8 }}>
+                  <div className="smart-match-footer">
+                    <span className={`tag ${m.matchScore >= 85 ? 'tag-emerald' : 'tag-neutral'}`} style={{ fontSize: 11 }}>
+                      {m.matchScore >= 85 ? 'High Priority' : 'Worth Reviewing'}
+                    </span>
                     {appliedIds.has(m.id) ? (
                       <span className="tag tag-emerald" style={{ padding: '8px 14px', fontSize: 12 }}>✓ Applied</span>
                     ) : (
@@ -116,7 +158,7 @@ export function SmartMatches() {
               </div>
             ))}
           </div>
-        </>
+        </div>
       )}
     </AppLayout>
   );
@@ -163,17 +205,47 @@ export function StudentApplications() {
 
   return (
     <AppLayout title="My Applications" subtitle="Track all your scholarship applications">
-      {/* Summary bar */}
+      <div className="student-intro-card card">
+        <div className="student-intro-body">
+          <div>
+            <div className="student-intro-eyebrow">Application Pipeline</div>
+            <div className="student-intro-title">Track every scholarship submission from applied to final decision.</div>
+            <div className="student-intro-copy">
+              Follow the current stage, review feedback, and focus on the scholarships that still need your attention.
+            </div>
+          </div>
+          <div className="student-intro-metrics">
+            {[{ label: 'Total', count: counts.all, color: 'var(--text1)' },
+              { label: 'Active', count: counts.pending + counts.review, color: 'var(--primary-h)' },
+              { label: 'Approved', count: counts.approved, color: 'var(--emerald)' },
+            ].map((item) => (
+              <div key={item.label} className="student-intro-stat">
+                <div className="student-intro-stat-value" style={{ color: item.color }}>{item.count}</div>
+                <div className="student-intro-stat-label">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {apps.length > 0 && (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20 }}>
-          {[{ label: 'Pending', count: counts.pending, color: 'var(--amber)', bg: 'rgba(245,158,11,0.08)' },
-            { label: 'In Review', count: counts.review, color: 'var(--teal)', bg: 'rgba(14,165,233,0.08)' },
-            { label: 'Approved', count: counts.approved, color: 'var(--emerald)', bg: 'rgba(16,185,129,0.08)' },
-            { label: 'Rejected', count: counts.rejected, color: 'var(--rose)', bg: 'rgba(244,63,94,0.08)' },
+        <div className="mini-stats-grid">
+          {[{ label: 'Pending', count: counts.pending, color: 'var(--amber)' },
+            { label: 'In Review', count: counts.review, color: 'var(--teal)' },
+            { label: 'Approved', count: counts.approved, color: 'var(--emerald)' },
+            { label: 'Rejected', count: counts.rejected, color: 'var(--rose)' },
           ].map((s) => (
-            <div key={s.label} onClick={() => setTab(s.label.toLowerCase().replace(' ', ''))} style={{ background: s.bg, border: `1px solid ${s.color}22`, borderRadius: 12, padding: '12px 16px', cursor: 'pointer', transition: 'all 0.2s' }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: s.color }}>{s.count}</div>
-              <div style={{ fontSize: 11.5, color: 'var(--text3)', marginTop: 2 }}>{s.label}</div>
+            <div
+              key={s.label}
+              className="mini-stat"
+              onClick={() => setTab(s.label.toLowerCase().replace(' ', ''))}
+              style={{ cursor: 'pointer' }}
+            >
+              <span style={{ fontSize: 16 }}>📌</span>
+              <div>
+                <div className="mini-stat-value" style={{ color: s.color }}>{s.count}</div>
+                <div className="mini-stat-label">{s.label}</div>
+              </div>
             </div>
           ))}
         </div>
@@ -276,11 +348,56 @@ export function StudentProfile() {
   const p = form.profile || {};
   const filled = fields.filter((f) => p[f] && p[f] !== 0 && p[f] !== '').length;
   const completion = Math.round((filled / fields.length) * 100);
+  const missingFields = fields.filter((f) => !p[f] || p[f] === 0 || p[f] === '');
+  const initials = form.name?.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase() || 'NS';
+  const summaryChips = [
+    p.state,
+    p.course,
+    p.category,
+    p.institution,
+  ].filter(Boolean).slice(0, 4);
+  const completionTone = completion >= 80 ? 'var(--emerald)' : completion >= 50 ? 'var(--primary)' : 'var(--amber)';
+  const completionMessage = completion >= 80
+    ? 'Excellent! Your profile is ready for highly accurate AI matches.'
+    : completion >= 50
+      ? 'Good progress. Add the remaining details to improve scholarship recommendations.'
+      : 'Profile is still light. Fill the important academic details to unlock better matching.';
 
   return (
     <AppLayout title="My Profile" subtitle="Keep your profile updated for better AI matches">
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="profile-shell">
+        <div className="profile-overview card">
+          <div className="profile-overview-body">
+            <div className="profile-overview-main">
+              <div className="profile-overview-avatar">{initials}</div>
+              <div>
+                <div className="profile-overview-eyebrow">Student Identity</div>
+                <div className="profile-overview-name">{form.name || 'Your Profile'}</div>
+                <div className="profile-overview-meta">{user?.email} {form.phone ? `· ${form.phone}` : ''}</div>
+                <div className="profile-overview-copy">{completionMessage}</div>
+                {summaryChips.length > 0 && (
+                  <div className="profile-overview-chips">
+                    {summaryChips.map((chip) => <span key={chip} className="tag tag-neutral">{chip}</span>)}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="profile-overview-side">
+              <div className="profile-overview-metric" style={{ color: completionTone }}>{completion}%</div>
+              <div className="profile-overview-side-label">Profile Completion</div>
+              <div className="profile-overview-side-copy">
+                {missingFields.length === 0 ? 'All required fields are complete.' : `${missingFields.length} important field${missingFields.length > 1 ? 's are' : ' is'} still missing.`}
+              </div>
+              <button className="btn btn-primary btn-lg" onClick={save} disabled={saving} style={{ width: '100%' }}>
+                {saving ? <><Spinner size={18} color="#fff" /> Saving...</> : 'Save Profile'}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="profile-layout">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Personal Info */}
           <div className="card">
             <div className="card-header"><span className="card-title">👤 Personal Information</span></div>
@@ -368,10 +485,6 @@ export function StudentProfile() {
             </div>
           </div>
 
-          <button className="btn btn-primary btn-lg" onClick={save} disabled={saving}>
-            {saving ? <><Spinner size={18} color="#fff" /> Saving...</> : '💾 Save Profile'}
-          </button>
-
           {/* Post-save nudge */}
           {saved && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.25)', borderRadius: 12, padding: '14px 18px', animation: 'fadeInUp 0.4s var(--ease-out) both' }}>
@@ -386,15 +499,15 @@ export function StudentProfile() {
         </div>
 
         {/* Sidebar: Completion */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div className="profile-sidebar">
           <div className="card" style={{ overflow: 'hidden' }}>
-            <div style={{ height: 3, background: `linear-gradient(90deg, ${completion >= 80 ? 'var(--emerald)' : completion >= 50 ? 'var(--primary)' : 'var(--amber)'}, transparent)` }} />
+            <div style={{ height: 3, background: `linear-gradient(90deg, ${completionTone}, transparent)` }} />
             <div className="card-body" style={{ textAlign: 'center' }}>
               <div style={{ position: 'relative', width: 100, height: 100, margin: '0 auto 16px' }}>
                 <svg width={100} height={100}>
                   <circle cx={50} cy={50} r={42} fill="none" stroke="var(--bg3)" strokeWidth={7} />
                   <circle cx={50} cy={50} r={42} fill="none"
-                    stroke={completion >= 80 ? 'var(--emerald)' : completion >= 50 ? 'var(--primary)' : 'var(--amber)'}
+                    stroke={completionTone}
                     strokeWidth={7} strokeLinecap="round"
                     strokeDasharray={2 * Math.PI * 42}
                     strokeDashoffset={2 * Math.PI * 42 - (completion / 100) * 2 * Math.PI * 42}
@@ -420,23 +533,35 @@ export function StudentProfile() {
           </div>
 
           <div className="card">
-            <div className="card-header"><span className="card-title" style={{ fontSize: 13 }}>Required Fields</span></div>
+            <div className="card-header">
+              <span className="card-title" style={{ fontSize: 13 }}>Required Fields</span>
+              <span style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'var(--font-mono)' }}>{filled}/{fields.length}</span>
+            </div>
             <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {fields.map((f) => {
                 const done = p[f] && p[f] !== 0 && p[f] !== '';
                 return (
-                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, padding: '4px 0' }}>
+                  <div key={f} className="profile-check-item">
                     <div style={{ width: 18, height: 18, borderRadius: 5, background: done ? 'var(--emerald)' : 'var(--bg3)', border: `1px solid ${done ? 'var(--emerald)' : 'var(--border)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
                       {done && <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>✓</span>}
                     </div>
                     <span style={{ color: done ? 'var(--text1)' : 'var(--text3)', textTransform: 'capitalize', transition: 'color 0.3s' }}>
                       {f === 'annualIncome' ? 'Annual Income' : f.charAt(0).toUpperCase() + f.slice(1)}
                     </span>
+                    <span className={`tag ${done ? 'tag-emerald' : 'tag-neutral'}`} style={{ marginLeft: 'auto', fontSize: 10 }}>
+                      {done ? 'Done' : 'Pending'}
+                    </span>
                   </div>
                 );
               })}
+              {missingFields.length > 0 && (
+                <div className="profile-check-note">
+                  Next best improvement: complete <strong>{missingFields[0] === 'annualIncome' ? 'Annual Income' : missingFields[0].charAt(0).toUpperCase() + missingFields[0].slice(1)}</strong>.
+                </div>
+              )}
             </div>
           </div>
+        </div>
         </div>
       </div>
     </AppLayout>
@@ -471,41 +596,90 @@ export function Documents() {
     }, 2000);
   };
 
-  const uploadedNames = files.map((f) => f.name.toLowerCase());
+  const isDocUploaded = (doc) => files.some((f) => f.name.toLowerCase().includes(doc.toLowerCase().split(' ')[0]));
+  const verifiedCount = files.filter((f) => f.status === 'verified').length;
+  const requiredUploaded = REQUIRED.filter((doc) => isDocUploaded(doc)).length;
+  const remainingRequired = REQUIRED.length - requiredUploaded;
 
   return (
     <AppLayout title="Documents" subtitle="Upload and manage your scholarship documents">
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20 }}>
-        <div>
+      <div className="docs-shell">
+        <div className="docs-hero card">
+          <div className="docs-hero-body">
+            <div>
+              <div className="docs-hero-eyebrow">Verification Workspace</div>
+              <div className="docs-hero-title">Keep every scholarship document organized, verified, and ready to submit.</div>
+              <div className="docs-hero-copy">
+                Upload once, track verification status, and make sure your core documents are always available for applications.
+              </div>
+            </div>
+
+            <div className="docs-hero-metrics">
+              <div className="docs-hero-stat">
+                <div className="docs-hero-stat-value">{files.length}</div>
+                <div className="docs-hero-stat-label">Uploaded</div>
+              </div>
+              <div className="docs-hero-stat">
+                <div className="docs-hero-stat-value">{verifiedCount}</div>
+                <div className="docs-hero-stat-label">Verified</div>
+              </div>
+              <div className="docs-hero-stat">
+                <div className="docs-hero-stat-value">{remainingRequired}</div>
+                <div className="docs-hero-stat-label">Still Needed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div className="docs-layout">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {/* Upload zone */}
           <div
             onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
             onDragLeave={() => setDragging(false)}
             onDrop={(e) => { e.preventDefault(); setDragging(false); handleFiles(e.dataTransfer.files); }}
-            style={{
-              border: `2px dashed ${dragging ? 'var(--primary)' : 'rgba(255,255,255,0.1)'}`,
-              borderRadius: 18,
-              padding: '48px 24px',
-              textAlign: 'center',
-              background: dragging
-                ? 'linear-gradient(135deg, rgba(245,166,35,0.08), rgba(245,166,35,0.04))'
-                : 'linear-gradient(135deg, rgba(255,255,255,0.02), transparent)',
-              transition: 'all 0.25s var(--ease-out)',
-              marginBottom: 20,
-              cursor: 'pointer',
-              position: 'relative',
-              overflow: 'hidden',
-            }}
+            className={`docs-upload-zone${dragging ? ' is-dragging' : ''}`}
             onClick={() => document.getElementById('file-input').click()}
           >
             {dragging && <div style={{ position: 'absolute', inset: 0, background: 'rgba(245,166,35,0.04)', animation: 'pulse 1s infinite' }} />}
-            <div style={{ fontSize: 44, marginBottom: 14, filter: dragging ? 'drop-shadow(0 0 12px rgba(245,166,35,0.5))' : 'none', transition: 'filter 0.3s' }}>📤</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 15, marginBottom: 6, color: dragging ? 'var(--primary-h)' : 'var(--text1)' }}>
+            <div className="docs-upload-icon">📤</div>
+            <div className="docs-upload-title" style={{ color: dragging ? 'var(--primary-h)' : 'var(--text1)' }}>
               {dragging ? 'Drop files here!' : 'Drop files here or click to upload'}
             </div>
-            <div style={{ fontSize: 13, color: 'var(--text3)' }}>PDF, JPG, PNG · Max 5MB per file</div>
+            <div className="docs-upload-sub">PDF, JPG, PNG · Max 5MB per file</div>
             <input id="file-input" type="file" multiple accept=".pdf,.jpg,.jpeg,.png" style={{ display: 'none' }}
               onChange={(e) => handleFiles(e.target.files)} />
+          </div>
+
+          <div className="mini-stats-grid">
+            <div className="mini-stat">
+              <span style={{ fontSize: 18 }}>📁</span>
+              <div>
+                <div className="mini-stat-value">{files.length}</div>
+                <div className="mini-stat-label">Total Files</div>
+              </div>
+            </div>
+            <div className="mini-stat">
+              <span style={{ fontSize: 18 }}>✅</span>
+              <div>
+                <div className="mini-stat-value" style={{ color: 'var(--emerald)' }}>{verifiedCount}</div>
+                <div className="mini-stat-label">Verified Files</div>
+              </div>
+            </div>
+            <div className="mini-stat">
+              <span style={{ fontSize: 18 }}>📌</span>
+              <div>
+                <div className="mini-stat-value">{requiredUploaded}</div>
+                <div className="mini-stat-label">Required Covered</div>
+              </div>
+            </div>
+            <div className="mini-stat">
+              <span style={{ fontSize: 18 }}>⏳</span>
+              <div>
+                <div className="mini-stat-value" style={{ color: remainingRequired === 0 ? 'var(--emerald)' : 'var(--amber)' }}>{remainingRequired}</div>
+                <div className="mini-stat-label">Still Needed</div>
+              </div>
+            </div>
           </div>
 
           {files.length > 0 && (
@@ -550,22 +724,37 @@ export function Documents() {
         </div>
 
         {/* Checklist */}
+        <div className="docs-sidebar">
         <div className="card" style={{ height: 'fit-content' }}>
-          <div className="card-header"><span className="card-title">Required Documents</span></div>
+          <div className="card-header">
+            <span className="card-title">Required Documents</span>
+            <span style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'var(--font-mono)' }}>{requiredUploaded}/{REQUIRED.length}</span>
+          </div>
           <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             {REQUIRED.map((doc) => {
-              const uploaded = files.some((f) => f.name.toLowerCase().includes(doc.toLowerCase().split(' ')[0]));
+              const uploaded = isDocUploaded(doc);
               return (
-                <div key={doc} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div key={doc} className="docs-check-item">
                   <div style={{ width: 20, height: 20, borderRadius: 6, background: uploaded ? 'var(--emerald)' : 'var(--bg3)', border: `1px solid ${uploaded ? 'var(--emerald)' : 'var(--border)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 11 }}>
                     {uploaded ? <span style={{ color: '#fff' }}>✓</span> : null}
                   </div>
                   <span style={{ fontSize: 12.5, color: uploaded ? 'var(--text1)' : 'var(--text3)' }}>{doc}</span>
+                  <span className={`tag ${uploaded ? 'tag-emerald' : 'tag-neutral'}`} style={{ marginLeft: 'auto', fontSize: 10 }}>
+                    {uploaded ? 'Ready' : 'Missing'}
+                  </span>
                 </div>
               );
             })}
           </div>
         </div>
+        <div className="docs-tip-card">
+          <div className="docs-tip-title">Submission Tip</div>
+          <div className="docs-tip-copy">
+            Keep file names clear like `income-certificate.pdf` or `aadhaar-front.jpg` so you can identify them quickly while applying.
+          </div>
+        </div>
+        </div>
+      </div>
       </div>
     </AppLayout>
   );

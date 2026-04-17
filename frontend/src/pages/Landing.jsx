@@ -36,6 +36,7 @@ function useInView(threshold = 0.2) {
 function FloatCard({ style, name, amount, match, delay }) {
   return (
     <div className="lp-float-card" style={{ ...style, animationDelay: delay }}>
+      <div className="lp-float-chip">AI ranked</div>
       <div className="lp-float-card-top">
         <span className="lp-float-amount">{amount}</span>
         <span className="lp-float-match">{match}% match</span>
@@ -44,18 +45,23 @@ function FloatCard({ style, name, amount, match, delay }) {
       <div className="lp-float-bar">
         <div className="lp-float-bar-fill" style={{ width: `${match}%` }} />
       </div>
+      <div className="lp-float-foot">
+        <span>Profile synced</span>
+        <span className="lp-float-foot-dot" />
+        <span>Deadline tracked</span>
+      </div>
     </div>
   );
 }
 
 /* ── Ticker ── */
 const TICKER_ITEMS = [
-  '🎉 Rahul from Bihar got ₹75,000 NSP scholarship',
-  '✅ Priya from Tamil Nadu matched 94% with PM YASASVI',
-  '🚀 Amit from UP applied to 3 scholarships in 2 minutes',
-  '💰 Sneha from Maharashtra received ₹1.2L disbursement',
-  '🎓 Kiran from Rajasthan found 8 matching scholarships',
-  '⚡ 240+ students registered today',
+  'Rahul from Bihar secured a ₹75,000 NSP scholarship',
+  'Priya from Tamil Nadu matched 94% with PM YASASVI',
+  'Amit from UP applied to 3 scholarships in under 2 minutes',
+  'Sneha from Maharashtra received a ₹1.2L disbursement',
+  'Kiran from Rajasthan discovered 8 high-fit scholarships',
+  '240+ new students registered today',
 ];
 
 function Ticker() {
@@ -99,13 +105,14 @@ export default function Landing() {
   }, []);
 
   const features = [
-    { icon: '🤖', color: 'rgba(245,166,35,0.15)', border: 'rgba(245,166,35,0.2)', title: 'AI-Powered Matching', text: '7-factor algorithm scores every scholarship against your profile and ranks by compatibility.' },
-    { icon: '⚡', color: 'rgba(14,165,233,0.15)', border: 'rgba(14,165,233,0.2)', title: 'Instant Discovery', text: '500+ government scholarships in one place. Find in seconds what takes days to research.' },
-    { icon: '📊', color: 'rgba(16,185,129,0.15)', border: 'rgba(16,185,129,0.2)', title: 'Real-Time Tracking', text: 'Live application status updates. Know exactly where every application stands.' },
-    { icon: '🔔', color: 'rgba(139,92,246,0.15)', border: 'rgba(139,92,246,0.2)', title: 'Smart Alerts', text: 'Never miss a deadline. Instant notifications when your application status changes.' },
-    { icon: '🛡️', color: 'rgba(244,63,94,0.15)', border: 'rgba(244,63,94,0.2)', title: 'Verified Data', text: 'All scholarships from official Ministry sources. Verified and updated regularly.' },
-    { icon: '📱', color: 'rgba(245,158,11,0.15)', border: 'rgba(245,158,11,0.2)', title: 'Mobile Ready', text: "Apply on any device. Fully responsive for India's mobile-first students." },
+    { icon: 'AI', color: 'rgba(124,140,255,0.15)', border: 'rgba(124,140,255,0.22)', title: 'AI-Powered Matching', text: 'A 7-factor recommendation engine scores every scholarship against your profile and ranks the best fits first.' },
+    { icon: '01', color: 'rgba(34,199,184,0.15)', border: 'rgba(34,199,184,0.22)', title: 'Instant Discovery', text: 'Search 500+ government scholarship opportunities from one clean dashboard instead of jumping across multiple sites.' },
+    { icon: '24', color: 'rgba(52,211,153,0.15)', border: 'rgba(52,211,153,0.22)', title: 'Real-Time Tracking', text: 'Follow each application stage with clear status updates, timelines, and next-step visibility.' },
+    { icon: 'AL', color: 'rgba(159,122,234,0.15)', border: 'rgba(159,122,234,0.22)', title: 'Smart Alerts', text: 'Get timely reminders for deadlines, missing details, and important application updates.' },
+    { icon: 'VD', color: 'rgba(251,113,133,0.15)', border: 'rgba(251,113,133,0.22)', title: 'Verified Data', text: 'Every listing is sourced from trusted scholarship programs so students can apply with confidence.' },
+    { icon: 'MO', color: 'rgba(246,199,96,0.15)', border: 'rgba(246,199,96,0.22)', title: 'Mobile Ready', text: "Optimized for phones, tablets, and desktops to support India's mobile-first student experience." },
   ];
+  const heroSignals = ['AI fit analysis', 'Verified schemes', 'Real-time alerts'];
 
   return (
     <div className="lp-root">
@@ -145,27 +152,36 @@ export default function Landing() {
           <div className="lp-hero-content">
             <div className="lp-hero-badge">
               <span className="lp-hero-badge-dot" />
-              <span>500+ Active Government Scholarships</span>
+              <span>Trusted platform for 500+ active scholarship opportunities</span>
               <span className="lp-hero-badge-arrow">→</span>
             </div>
 
             <h1 className="lp-hero-title">
-              Find Your Perfect<br />
-              <span className="lp-hero-title-gradient">Scholarship</span>
-              <br />with AI
+              Discover the right<br />
+              <span className="lp-hero-title-gradient">Scholarship Match</span>
+              <br />with confidence
             </h1>
 
             <p className="lp-hero-sub">
-              India's most advanced scholarship discovery platform. AI-powered matching, one-click applications, real-time tracking — all in one place.
+              A modern scholarship portal for students to discover, evaluate, and track government schemes through one clear and guided experience.
             </p>
+
+            <div className="lp-hero-signals">
+              {heroSignals.map((signal) => (
+                <div key={signal} className="lp-hero-signal">
+                  <span className="lp-hero-signal-dot" />
+                  <span>{signal}</span>
+                </div>
+              ))}
+            </div>
 
             <div className="lp-hero-cta">
               <button className="btn btn-primary btn-lg lp-cta-primary" onClick={() => navigate('/register')}>
-                <span>Start for Free</span>
+                <span>Create Student Account</span>
                 <span className="lp-cta-arrow">→</span>
               </button>
               <button className="btn btn-ghost btn-lg" onClick={() => navigate('/login')}>
-                Sign In
+                Open Portal
               </button>
             </div>
 
@@ -176,7 +192,7 @@ export default function Landing() {
                 ))}
               </div>
               <div className="lp-trust-text">
-                <span className="lp-trust-count">2.4L+ students</span> already matched
+                <span className="lp-trust-count">2.4L+ students</span> already discovered better-fit scholarships
               </div>
             </div>
           </div>
@@ -184,6 +200,13 @@ export default function Landing() {
           {/* Right — floating cards */}
           <div className="lp-hero-visual">
             <div className="lp-hero-visual-inner">
+              <div className="lp-visual-shell">
+                <div className="lp-visual-shell-ring lp-visual-shell-ring-a" />
+                <div className="lp-visual-shell-ring lp-visual-shell-ring-b" />
+                <div className="lp-visual-shell-grid" />
+                <div className="lp-visual-shell-noise" />
+              </div>
+
               <FloatCard
                 style={{ top: '8%', left: '5%' }}
                 delay="0s"
@@ -206,8 +229,19 @@ export default function Landing() {
                 match={82}
               />
 
+              <div className="lp-mini-pill lp-mini-pill-top">
+                <span className="lp-mini-pill-label">Scholarships live</span>
+                <span className="lp-mini-pill-value">500+</span>
+              </div>
+              <div className="lp-mini-pill lp-mini-pill-bottom">
+                <span className="lp-mini-pill-label">Eligibility synced</span>
+                <span className="lp-mini-pill-value">24/7</span>
+              </div>
+
               {/* Center glow orb */}
               <div className="lp-visual-orb" />
+              <div className="lp-visual-core-glow" />
+              <div className="lp-visual-scan" />
 
               {/* Match score ring */}
               <div className="lp-visual-ring">
@@ -218,8 +252,8 @@ export default function Landing() {
                     transform="rotate(-90 60 60)" />
                   <defs>
                     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#F5A623" />
-                      <stop offset="100%" stopColor="#FBBF24" />
+                      <stop offset="0%" stopColor="#7C8CFF" />
+                      <stop offset="100%" stopColor="#22C7B8" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -228,6 +262,10 @@ export default function Landing() {
                   <span className="lp-visual-ring-sub">Avg Match</span>
                 </div>
               </div>
+
+              <div className="lp-match-orbit lp-match-orbit-1">AI fit</div>
+              <div className="lp-match-orbit lp-match-orbit-2">Docs ready</div>
+              <div className="lp-match-orbit lp-match-orbit-3">Fast apply</div>
             </div>
           </div>
         </div>
@@ -251,13 +289,13 @@ export default function Landing() {
         <div className="lp-section-head">
           <div className="lp-eyebrow">Process</div>
           <h2 className="lp-section-title">How NSMP Works</h2>
-          <p className="lp-section-sub">From profile to payout in three simple steps</p>
+          <p className="lp-section-sub">From onboarding to application tracking in three clear steps</p>
         </div>
         <div className="lp-steps">
           {[
-            { n: '01', icon: '👤', title: 'Create Your Profile', text: 'Enter academic details, category, income, and course. Takes under 3 minutes.' },
-            { n: '02', icon: '🤖', title: 'Get AI Recommendations', text: 'Our algorithm instantly matches you with the most relevant scholarships — sorted by fit score.' },
-            { n: '03', icon: '💸', title: 'Apply & Get Funded', text: 'Apply in one click. Track your application and receive disbursement directly.' },
+            { n: '01', icon: '01', title: 'Create Your Profile', text: 'Add academic details, category, income bracket, and course information in a few simple steps.' },
+            { n: '02', icon: '02', title: 'Get Smart Recommendations', text: 'The system ranks scholarships by fit score so the most relevant options appear first.' },
+            { n: '03', icon: '03', title: 'Apply and Track Progress', text: 'Submit applications faster and monitor status updates from one central dashboard.' },
           ].map((s, i) => (
             <div key={s.n} className="lp-step">
               <div className="lp-step-num">{s.n}</div>
@@ -275,7 +313,7 @@ export default function Landing() {
         <div className="lp-section-head">
           <div className="lp-eyebrow">Features</div>
           <h2 className="lp-section-title">Everything you need to succeed</h2>
-          <p className="lp-section-sub">Powerful tools to find, apply, and track government scholarships</p>
+          <p className="lp-section-sub">A cleaner scholarship workflow built for discovery, decision-making, and application follow-up</p>
         </div>
         <div className="lp-features-grid">
           {features.map((f) => (
@@ -292,19 +330,20 @@ export default function Landing() {
       {/* ── CTA BANNER ── */}
       <section className="lp-cta-section">
         <div className="lp-cta-glow" />
+        <div className="lp-cta-grid" />
         <div className="lp-cta-inner">
-          <div className="lp-cta-emoji">🎓</div>
-          <h2 className="lp-cta-title">Ready to find your scholarship?</h2>
-          <p className="lp-cta-sub">Join thousands of students who discovered their scholarship matches on NSMP.</p>
+          <div className="lp-cta-emoji">NSMP</div>
+          <h2 className="lp-cta-title">Ready to improve your scholarship search?</h2>
+          <p className="lp-cta-sub">Join students using NSMP to find relevant opportunities faster and manage applications from one place.</p>
           <div className="lp-cta-btns">
             <button className="btn btn-primary btn-lg lp-cta-primary" onClick={() => navigate('/register')}>
               Create Free Account →
             </button>
             <button className="btn btn-ghost btn-lg" onClick={() => navigate('/login')}>
-              Sign In Instead
+              Sign In
             </button>
           </div>
-          <div className="lp-cta-note">✓ No credit card &nbsp;·&nbsp; ✓ Free forever &nbsp;·&nbsp; ✓ Govt. verified data</div>
+          <div className="lp-cta-note">Student-first experience · AI-assisted recommendations · verified program data</div>
         </div>
       </section>
 
@@ -314,7 +353,7 @@ export default function Landing() {
           <div className="lp-nav-logo-icon" style={{ width: 28, height: 28, fontSize: 12 }}>🎓</div>
           <span className="lp-nav-logo-text" style={{ fontSize: 13 }}>NSMP</span>
         </div>
-        <div className="lp-footer-copy">© 2025 National Scholarship Matching Portal · Ministry of Education, GoI</div>
+        <div className="lp-footer-copy">© {new Date().getFullYear()} National Scholarship Matching Portal · Ministry of Education, GoI</div>
         <div className="lp-footer-links">
           {['Privacy', 'Terms', 'Contact'].map((t) => (
             <span key={t} className="lp-footer-link">{t}</span>

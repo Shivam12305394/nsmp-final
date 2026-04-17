@@ -34,7 +34,7 @@ export function MatchRing({ score, size = 48 }) {
   const r = (size - 8) / 2;
   const circ = 2 * Math.PI * r;
   const offset = circ - (score / 100) * circ;
-  const color = score >= 80 ? '#10B981' : score >= 60 ? '#6366F1' : score >= 40 ? '#F59E0B' : '#F43F5E';
+  const color = score >= 80 ? '#34D399' : score >= 60 ? '#22D3EE' : score >= 40 ? '#F59E0B' : '#F43F5E';
 
   return (
     <div className="match-ring-wrap" style={{ width: size, height: size }}>
@@ -54,10 +54,10 @@ export function MatchRing({ score, size = 48 }) {
 }
 
 // ── STAT CARD ──
-export function StatCard({ icon, value, label, change, changeDir, bg = 'rgba(99,102,241,0.1)' }) {
+export function StatCard({ icon, value, label, change, changeDir, bg = 'var(--primary-dim)' }) {
   return (
     <div className="stat-card">
-      <div className="stat-icon" style={{ background: bg }}>{icon}</div>
+      <div className="stat-icon" style={{ background: bg, borderColor: 'var(--border)' }}>{icon}</div>
       <div className="stat-value">{value}</div>
       <div className="stat-label">{label}</div>
       {change !== undefined && (
@@ -150,16 +150,16 @@ export function AmountChip({ amount }) {
       display: 'inline-flex',
       alignItems: 'center',
       gap: 4,
-      background: 'rgba(16,185,129,0.1)',
-      border: '1px solid rgba(16,185,129,0.2)',
-      borderRadius: 8,
-      padding: '5px 12px',
+      background: 'var(--primary-dim)',
+      border: '1px solid var(--primary-glow)',
+      borderRadius: 12,
+      padding: '6px 14px',
     }}>
-      <span style={{ fontSize: 11, color: 'var(--emerald)', fontWeight: 700 }}>₹</span>
-      <span style={{ fontSize: 15, fontWeight: 800, color: 'var(--emerald)', fontFamily: 'var(--font-display)' }}>
+      <span style={{ fontSize: 11, color: 'var(--primary)', fontWeight: 700 }}>₹</span>
+      <span style={{ fontSize: 16, fontWeight: 800, color: 'var(--primary-h)', fontFamily: 'var(--font-display)' }}>
         {amount >= 100000 ? `${(amount / 100000).toFixed(1)}L` : `${(amount / 1000).toFixed(0)}K`}
       </span>
-      <span style={{ fontSize: 10, color: 'var(--text3)' }}>/yr</span>
+      <span style={{ fontSize: 11, color: 'var(--text3)' }}>/yr</span>
     </div>
   );
 }

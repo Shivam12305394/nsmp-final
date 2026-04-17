@@ -515,7 +515,7 @@
       "description": "Special scholarship for students domiciled in North-Eastern states pursuing general degree courses in colleges/universities outside NE region.",
       "eligibility": "NE state domicile, pursuing UG outside NE, income below ₹4.5 LPA",
       "benefits": "₹54,000/year for general courses, ₹1,32,000/year for technical/medical",
-      "applicants": 7800,
+      "applicants": 7801,
       "featured": false,
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
@@ -736,6 +736,15 @@
       "reviewNote": "",
       "appliedAt": "2026-04-16T12:49:53.442Z",
       "updatedAt": "2026-04-16T12:51:30.063Z"
+    },
+    {
+      "id": "ce86e0ed-9b3e-4a60-bd01-8d899ddd7566",
+      "studentId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "scholarshipId": "sch-007",
+      "status": "pending",
+      "reviewNote": "",
+      "appliedAt": "2026-04-17T08:50:48.709Z",
+      "updatedAt": "2026-04-17T08:50:48.709Z"
     }
   ],
   "notifications": [
@@ -792,6 +801,15 @@
       "type": "info",
       "read": false,
       "createdAt": "2026-04-16T13:36:07.547Z"
+    },
+    {
+      "id": "48dcfaeb-f9ca-43c6-9ec3-1f0d25185a3f",
+      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "title": "Application Submitted ✅",
+      "message": "Your application for \"Ishan Uday Special Scholarship (NE Region)\" has been submitted successfully.",
+      "type": "success",
+      "read": false,
+      "createdAt": "2026-04-17T08:50:48.710Z"
     }
   ]
 }
