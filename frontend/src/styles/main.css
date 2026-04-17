@@ -1335,3 +1335,210 @@ body {
 /* ── Bubble bg fix for landing ── */
 .lp-root .bubble-bg { position: absolute; z-index: 0; }
 .lp-root { isolation: isolate; }
+
+/* ════════════════════════════════════════════════════════════════════
+   NSMP — Enhanced UI v3.0 Additions
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ── Auth card premium ── */
+.auth-card {
+  background: var(--bg1);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  padding: 38px 36px;
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(245,166,35,0.04);
+  animation: modalIn 0.4s var(--ease-out) both;
+}
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 15%; right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--primary), var(--teal), transparent);
+  opacity: 0.6;
+}
+
+/* ── Scholarship card enhanced ── */
+.scholarship-card {
+  background: linear-gradient(145deg, var(--bg1) 0%, rgba(13,18,32,0.95) 100%);
+}
+.scholarship-card:hover {
+  border-color: rgba(245,166,35,0.25);
+  transform: translateY(-5px) scale(1.005);
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(245,166,35,0.07);
+}
+
+/* ── Card enhanced hover ── */
+.card:hover {
+  border-color: rgba(245,166,35,0.1);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ── Stat card value color ── */
+.stat-card .stat-value {
+  transition: color 0.3s;
+}
+
+/* ── Welcome banner responsive ── */
+@media (max-width: 700px) {
+  .welcome-banner-btns { flex-direction: column; }
+}
+
+/* ── Nav item enhanced active ── */
+.nav-item.active {
+  background: linear-gradient(135deg, rgba(245,166,35,0.12), rgba(245,166,35,0.06));
+  box-shadow: 0 2px 12px rgba(245,166,35,0.1), inset 0 0 0 1px rgba(245,166,35,0.15);
+}
+
+/* ── Topbar enhanced ── */
+.topbar {
+  box-shadow: 0 1px 0 var(--border), 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* ── Table row hover ── */
+.table tbody tr:hover {
+  background: rgba(245,166,35,0.03);
+}
+
+/* ── Form input enhanced focus ── */
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  background: rgba(13,18,32,0.9);
+  box-shadow: 0 0 0 3px rgba(245,166,35,0.15), 0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* ── Modal enhanced ── */
+.modal {
+  background: linear-gradient(145deg, var(--bg1) 0%, rgba(11,16,28,0.98) 100%);
+  box-shadow: var(--shadow-xl), 0 0 0 1px rgba(245,166,35,0.06);
+}
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(245,166,35,0.4), transparent);
+}
+
+/* ── Badge enhanced ── */
+.badge {
+  font-size: 10.5px;
+  letter-spacing: 0.3px;
+}
+
+/* ── Application status accent ── */
+.app-status-accent {
+  height: 3px;
+  border-radius: 0;
+}
+
+/* ── Sidebar logo enhanced ── */
+.sidebar-logo {
+  background: linear-gradient(180deg, rgba(245,166,35,0.04) 0%, transparent 100%);
+}
+
+/* ── User card online dot ── */
+.user-role {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ── Page header enhanced ── */
+.page-header h1 {
+  background: linear-gradient(135deg, var(--text1) 0%, rgba(248,250,252,0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Completion ring glow ── */
+.completion-ring-glow {
+  filter: drop-shadow(0 0 8px rgba(16,185,129,0.4));
+}
+
+/* ── OTP input enhanced ── */
+.otp-input-enhanced {
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  letter-spacing: 12px;
+  font-size: 28px;
+  text-align: center;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  transition: all 0.2s;
+}
+.otp-input-enhanced:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(245,166,35,0.15);
+  background: var(--bg3);
+}
+
+/* ── Step progress bar ── */
+.step-progress {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.step-progress-bar {
+  height: 3px;
+  border-radius: 99px;
+  flex: 1;
+  transition: background 0.4s var(--ease-out);
+}
+
+/* ── Scholarship amount gradient ── */
+.sc-amount {
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+
+/* ── Match score badge ── */
+.match-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 99px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  border: 1px solid;
+  transition: all 0.2s;
+}
+
+/* ── Summary stat mini cards ── */
+.summary-stat {
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: transform 0.2s var(--ease-spring), box-shadow 0.2s;
+}
+.summary-stat:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+/* ── Responsive dashboard grid ── */
+@media (max-width: 900px) {
+  .dashboard-main-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .welcome-banner {
+    flex-direction: column;
+    align-items: flex-start !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .summary-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .auth-card {
+    padding: 28px 20px;
+  }
+}

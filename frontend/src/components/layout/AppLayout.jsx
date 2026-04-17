@@ -80,6 +80,8 @@ export function Sidebar({ mobileOpen, onClose }) {
   };
 
   const initials = user?.name?.split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase() || '?';
+  const avatarColors = ['#F5A623', '#0EA5E9', '#10B981', '#8B5CF6', '#F43F5E'];
+  const avatarColor = avatarColors[(user?.name?.charCodeAt(0) || 0) % avatarColors.length];
 
   return (
     <>
@@ -99,8 +101,7 @@ export function Sidebar({ mobileOpen, onClose }) {
         </div>
 
         <nav className="sidebar-nav">
-          {user?.role === 'admin' && <div className="nav-section-label">Admin Panel</div>}
-          {user?.role === 'student' && <div className="nav-section-label">Student Portal</div>}
+          <div className="nav-section-label">{user?.role === 'admin' ? 'Admin Panel' : 'Student Portal'}</div>
           {nav.map((item) => (
             <NavLink
               key={item.to}
@@ -116,10 +117,13 @@ export function Sidebar({ mobileOpen, onClose }) {
 
         <div className="sidebar-bottom">
           <div className="user-card">
-            <div className="user-avatar">{initials}</div>
+            <div className="user-avatar" style={{ background: `linear-gradient(135deg, ${avatarColor}, ${avatarColor}99)` }}>{initials}</div>
             <div className="user-info">
               <div className="user-name">{user?.name}</div>
-              <div className="user-role">{user?.role}</div>
+              <div className="user-role" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <span style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--emerald)', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+                {user?.role}
+              </div>
             </div>
             <button className="logout-btn" onClick={handleLogout} title="Logout">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
