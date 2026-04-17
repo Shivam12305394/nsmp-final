@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
-import { ScholarshipCard, SearchBar, Modal, Spinner, AmountChip, Badge, EmptyState } from '../../components/ui';
+import { ScholarshipCard, SearchBar, Modal, Spinner, AmountChip, EmptyState } from '../../components/ui';
 import { scholarshipAPI, applicationAPI } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -74,6 +74,16 @@ export default function BrowseScholarships() {
   const appliedIds = new Set(myApps.map((a) => a.scholarshipId));
   const activeFilterCount = [category, course, sort].filter(Boolean).length;
   const selectedWithScore = selected ? { ...selected, matchScore: calcMatch(selected, profile) } : null;
+  const featuredCount = displayList.filter((s) => s.featured).length;
+  const appliedCount = displayList.filter((s) => appliedIds.has(s.id)).length;
+  const topMatchCount = profileFilled ? displayList.filter((s) => s.matchScore >= 80).length : 0;
+  const eligibleCount = profileFilled ? displayList.filter((s) => s.matchScore >= 50).length : 0;
+  const clearFilters = () => {
+    setSearch('');
+    setCategory('');
+    setCourse('');
+    setSort('');
+  };
 
   const apply = async (scholarshipId) => {
     setApplying(true);
@@ -90,59 +100,109 @@ export default function BrowseScholarships() {
 
   return (
     <AppLayout title="Browse Scholarships" subtitle={`${displayList.length} scholarships available`}>
+      <div className="browse-shell">
+        <div className="browse-hero card">
+          <div className="browse-hero-body">
+            <div>
+              <div className="browse-hero-eyebrow">Discovery Workspace</div>
+              <div className="browse-hero-title">Find the right scholarship faster, with clearer filters and smarter matching.</div>
+              <div className="browse-hero-copy">
+                Explore curated programs, compare fit instantly, and focus on opportunities that actually match your profile.
+              </div>
+            </div>
+
+            <div className="browse-hero-metrics">
+              <div className="browse-hero-stat">
+                <div className="browse-hero-stat-value">{displayList.length}</div>
+                <div className="browse-hero-stat-label">Visible Results</div>
+              </div>
+              <div className="browse-hero-stat">
+                <div className="browse-hero-stat-value">{featuredCount}</div>
+                <div className="browse-hero-stat-label">Featured</div>
+              </div>
+              <div className="browse-hero-stat">
+                <div className="browse-hero-stat-value">{profileFilled ? topMatchCount : appliedCount}</div>
+                <div className="browse-hero-stat-label">{profileFilled ? 'Top Matches' : 'Applied'}</div>
+              </div>
+            </div>
+          </div>
+        </div>
 
       {/* Profile incomplete nudge */}
       {!profileFilled && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'linear-gradient(135deg, rgba(245,166,35,0.08), rgba(245,166,35,0.04))', border: '1px solid rgba(245,166,35,0.2)', borderRadius: 14, padding: '14px 20px', marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'linear-gradient(135deg, rgba(52,211,153,0.1), rgba(34,211,238,0.06))', border: '1px solid rgba(52,211,153,0.2)', borderRadius: 14, padding: '14px 20px', marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, var(--primary), transparent)' }} />
-          <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(245,166,35,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>💡</div>
+          <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(52,211,153,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>i</div>
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 700, color: 'var(--primary-h)', fontSize: 13.5 }}>Complete your profile to unlock match scores</div>
             <div style={{ fontSize: 12.5, color: 'var(--text2)', marginTop: 2 }}>See exactly how well each scholarship fits you</div>
           </div>
-          <a href="/profile" className="btn btn-primary btn-sm" style={{ flexShrink: 0 }}>Update Profile →</a>
+          <a href="/profile" className="btn btn-primary btn-sm" style={{ flexShrink: 0 }}>Update Profile</a>
         </div>
       )}
-      {/* Search always visible */}
-      <div style={{ display: 'flex', gap: 10, marginBottom: 10, alignItems: 'center' }}>
-        <SearchBar value={search} onChange={setSearch} placeholder="Search scholarships..." style={{ flex: 1 }} />
-        <button
-          className="btn btn-ghost filter-accordion-toggle"
-          style={{ display: 'none', gap: 6, flexShrink: 0 }}
-          onClick={() => setFiltersOpen((v) => !v)}
-        >
-          ⚙ Filters{activeFilterCount > 0 && <span className="nav-badge" style={{ background: 'var(--primary)', color: '#1A0F00' }}>{activeFilterCount}</span>}
-        </button>
-      </div>
+      <div className="browse-filter-card card">
+        <div className="card-header">
+          <span className="card-title">Refine Search</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            {activeFilterCount > 0 && <span style={{ fontSize: 11, color: 'var(--text3)', fontFamily: 'var(--font-mono)' }}>{activeFilterCount} active</span>}
+            <button
+              className="btn btn-ghost filter-accordion-toggle"
+              style={{ display: 'none', gap: 6, flexShrink: 0 }}
+              onClick={() => setFiltersOpen((v) => !v)}
+            >
+              Filters{activeFilterCount > 0 && <span className="nav-badge" style={{ background: 'var(--primary)', color: '#eef2ff' }}>{activeFilterCount}</span>}
+            </button>
+          </div>
+        </div>
+        <div className="card-body">
+          <div style={{ display: 'flex', gap: 10, marginBottom: 12, alignItems: 'center' }}>
+            <SearchBar value={search} onChange={setSearch} placeholder="Search scholarships, ministries, programmes..." style={{ flex: 1 }} />
+            {activeFilterCount > 0 && (
+              <button className="btn btn-ghost" onClick={clearFilters} style={{ whiteSpace: 'nowrap' }}>
+                Clear All
+              </button>
+            )}
+          </div>
 
-      {/* Desktop filter row */}
-      <div className="filter-row" style={{ marginBottom: 24, display: 'flex' }} id="desktop-filters">
-        <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="">All Categories</option>
-          {CATEGORIES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select className="form-select" value={course} onChange={(e) => setCourse(e.target.value)}>
-          <option value="">All Courses</option>
-          {COURSES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select className="form-select" value={sort} onChange={(e) => setSort(e.target.value)}>
-          {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-        </select>
-      </div>
+          {/* Desktop filter row */}
+          <div className="filter-row browse-filter-grid" style={{ marginBottom: 0, display: 'flex' }} id="desktop-filters">
+            <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="">All Categories</option>
+              {CATEGORIES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select className="form-select" value={course} onChange={(e) => setCourse(e.target.value)}>
+              <option value="">All Courses</option>
+              {COURSES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select className="form-select" value={sort} onChange={(e) => setSort(e.target.value)}>
+              {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+            </select>
+          </div>
 
-      {/* Mobile filter accordion */}
-      <div className={`filter-accordion-body ${filtersOpen ? 'open' : ''}`} style={{ marginBottom: filtersOpen ? 16 : 0 }}>
-        <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-          <option value="">All Categories</option>
-          {CATEGORIES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select className="form-select" value={course} onChange={(e) => setCourse(e.target.value)}>
-          <option value="">All Courses</option>
-          {COURSES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
-        </select>
-        <select className="form-select" value={sort} onChange={(e) => setSort(e.target.value)}>
-          {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
-        </select>
+          {/* Mobile filter accordion */}
+          <div className={`filter-accordion-body ${filtersOpen ? 'open' : ''}`} style={{ marginBottom: filtersOpen ? 0 : 0 }}>
+            <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="">All Categories</option>
+              {CATEGORIES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select className="form-select" value={course} onChange={(e) => setCourse(e.target.value)}>
+              <option value="">All Courses</option>
+              {COURSES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+            <select className="form-select" value={sort} onChange={(e) => setSort(e.target.value)}>
+              {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+            </select>
+          </div>
+
+          {(search || category || course || sort) && (
+            <div className="browse-active-filters">
+              {search && <span className="tag tag-neutral">Search: {search}</span>}
+              {category && <span className="tag tag-primary">{category}</span>}
+              {course && <span className="tag tag-neutral">{course}</span>}
+              {sort && <span className="tag tag-emerald">{SORTS.find((s) => s.value === sort)?.label || sort}</span>}
+            </div>
+          )}
+        </div>
       </div>
 
       {loading ? (
@@ -150,31 +210,37 @@ export default function BrowseScholarships() {
       ) : displayList.length === 0 ? (
         <EmptyState icon="🔍" title="No scholarships found" sub="Try adjusting your filters or search term" />
       ) : (
-        <div className="scholarship-grid">
-          {displayList.map((s) => (
-            <div key={s.id} style={{ position: 'relative' }}>
-              {/* Match score badge */}
-              {profileFilled && s.matchScore > 0 && (
-                <div style={{
-                  position: 'absolute', top: 12, right: 12, zIndex: 2,
-                  background: s.matchScore >= 80 ? 'rgba(16,185,129,0.15)' : s.matchScore >= 50 ? 'rgba(245,166,35,0.15)' : 'rgba(255,255,255,0.06)',
-                  border: `1px solid ${s.matchScore >= 80 ? 'rgba(16,185,129,0.35)' : s.matchScore >= 50 ? 'rgba(245,166,35,0.35)' : 'var(--border)'}`,
-                  borderRadius: 99, padding: '3px 10px',
-                  fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-mono)',
-                  color: s.matchScore >= 80 ? 'var(--emerald)' : s.matchScore >= 50 ? 'var(--primary-h)' : 'var(--text3)',
-                }}>
-                  {s.matchScore}% match
-                </div>
-              )}
-              <ScholarshipCard
-                s={s}
-                applied={appliedIds.has(s.id)}
-                onClick={setSelected}
-              />
+        <>
+          <div className="browse-results-head">
+            <div>
+              <div className="browse-results-title">Scholarship Results</div>
+              <div className="browse-results-sub">
+                {profileFilled
+                  ? `${eligibleCount} scholarships look reasonably aligned with your profile, including ${topMatchCount} strong matches.`
+                  : 'Complete your profile to unlock personal fit scores and smarter prioritization.'}
+              </div>
             </div>
-          ))}
-        </div>
+            <div className="browse-results-side">
+              <span className="tag tag-neutral">{appliedCount} applied</span>
+              <span className="tag tag-emerald">{featuredCount} featured</span>
+            </div>
+          </div>
+
+          <div className="scholarship-grid">
+            {displayList.map((s) => (
+              <div key={s.id} style={{ position: 'relative' }}>
+                <ScholarshipCard
+                  s={s}
+                  applied={appliedIds.has(s.id)}
+                  onClick={setSelected}
+                  matchScore={profileFilled ? s.matchScore : undefined}
+                />
+              </div>
+            ))}
+          </div>
+        </>
       )}
+      </div>
 
       {/* Detail Modal */}
       <Modal
@@ -188,10 +254,10 @@ export default function BrowseScholarships() {
             <>
               <button className="btn btn-ghost" onClick={() => setSelected(null)}>Close</button>
               {appliedIds.has(selected?.id) ? (
-                <span className="tag tag-emerald" style={{ padding: '8px 16px', fontSize: 13 }}>✓ Already Applied</span>
+                <span className="tag tag-emerald" style={{ padding: '8px 16px', fontSize: 13 }}>Already Applied</span>
               ) : (
                 <button className="btn btn-primary" onClick={() => apply(selected.id)} disabled={applying}>
-                  {applying ? <><Spinner size={16} color="#fff" /> Applying...</> : '⚡ Apply Now'}
+                  {applying ? <><Spinner size={16} color="#fff" /> Applying...</> : 'Apply Now'}
                 </button>
               )}
             </>
@@ -203,15 +269,15 @@ export default function BrowseScholarships() {
 
             {/* Match score bar in modal */}
             {profileFilled && selectedWithScore.matchScore > 0 && (
-              <div style={{ background: selectedWithScore.matchScore >= 80 ? 'rgba(16,185,129,0.07)' : 'rgba(245,166,35,0.07)', border: `1px solid ${selectedWithScore.matchScore >= 80 ? 'rgba(16,185,129,0.2)' : 'rgba(245,166,35,0.2)'}`, borderRadius: 10, padding: '12px 16px' }}>
+              <div style={{ background: selectedWithScore.matchScore >= 80 ? 'rgba(52,211,153,0.08)' : 'rgba(34,211,238,0.08)', border: `1px solid ${selectedWithScore.matchScore >= 80 ? 'rgba(52,211,153,0.2)' : 'rgba(34,211,238,0.18)'}`, borderRadius: 10, padding: '12px 16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                   <span style={{ fontSize: 13, fontWeight: 700, color: selectedWithScore.matchScore >= 80 ? 'var(--emerald)' : 'var(--primary-h)' }}>
-                    {selectedWithScore.matchScore >= 80 ? '🌟 Great match for you!' : selectedWithScore.matchScore >= 50 ? '👍 Decent match' : '⚠️ Partial match'}
+                    {selectedWithScore.matchScore >= 80 ? 'Excellent fit for your profile' : selectedWithScore.matchScore >= 50 ? 'Good fit for your profile' : 'Partial fit for your profile'}
                   </span>
                   <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: 15, color: selectedWithScore.matchScore >= 80 ? 'var(--emerald)' : 'var(--primary-h)' }}>{selectedWithScore.matchScore}%</span>
                 </div>
                 <div style={{ height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 99, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${selectedWithScore.matchScore}%`, background: selectedWithScore.matchScore >= 80 ? 'var(--emerald)' : 'linear-gradient(90deg, var(--primary), var(--amber))', borderRadius: 99, transition: 'width 0.8s' }} />
+                  <div style={{ height: '100%', width: `${selectedWithScore.matchScore}%`, background: selectedWithScore.matchScore >= 80 ? 'var(--emerald)' : 'linear-gradient(90deg, var(--primary), var(--teal))', borderRadius: 99, transition: 'width 0.8s' }} />
                 </div>
               </div>
             )}

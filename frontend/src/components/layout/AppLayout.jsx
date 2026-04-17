@@ -1,8 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { userAPI } from '../../utils/api';
 import { BubbleBackground } from '../SplashScreen';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const StudentNav = [
   { to: '/dashboard', icon: '⊞', label: 'Dashboard' },

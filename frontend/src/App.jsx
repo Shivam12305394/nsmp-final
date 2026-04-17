@@ -14,14 +14,14 @@ import { AdminDashboard, AdminScholarships, AdminApplications, AdminStudents, An
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
   const location = useLocation();
-  if (loading) return <div style={{ minHeight: '100vh', background: '#080C14' }} />;
+  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg)' }} />;
   if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
   return children;
 }
 
 function AdminRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div style={{ minHeight: '100vh', background: '#080C14' }} />;
+  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg)' }} />;
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== 'admin') return <Navigate to="/dashboard" replace />;
   return children;
@@ -29,7 +29,7 @@ function AdminRoute({ children }) {
 
 function StudentRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div style={{ minHeight: '100vh', background: '#080C14' }} />;
+  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg)' }} />;
   if (!user) return <Navigate to="/login" replace />;
   if (user.role === 'admin') return <Navigate to="/dashboard" replace />;
   return children;
@@ -48,8 +48,8 @@ function SmartApplications() {
   return user?.role === 'admin' ? <AdminApplications /> : <StudentApplications />;
 }
 
-// Public pages ko loading ka wait nahi karna — hamesha dikhao
-// Agar user already logged in hai (aur loading done hai) tabhi redirect karo
+// Public pages should render immediately without waiting for auth loading.
+// Redirect only after loading completes and a logged-in user is confirmed.
 function PublicPage({ children }) {
   const { user, loading } = useAuth();
   if (!loading && user) return <Navigate to="/dashboard" replace />;
@@ -81,7 +81,7 @@ function AppRoutes() {
 }
 
 export default function App() {
-  const [splashDone, setSplashDone] = useState(false);
+  const [splashDone, setSplashDone] = useState(import.meta.env.DEV);
   return (
     <AuthProvider>
       {!splashDone && <SplashScreen onDone={() => setSplashDone(true)} />}
@@ -89,3 +89,5 @@ export default function App() {
     </AuthProvider>
   );
 }
+
+// GSAP AnimationContext for page transitions (will be used in layouts)

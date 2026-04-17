@@ -47,18 +47,13 @@ export function AdminDashboard() {
         <StatCard icon="✅" value={`${analytics?.approvalRate ?? 0}%`} label="Approval Rate" bg="rgba(245,158,11,0.12)" />
       </div>
 
-      {/* Status mini-cards row */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 24 }}>
+      <div className="mini-stats-grid">
         {statusItems.map(({ label, count, color, icon }) => (
-          <div key={label} style={{
-            background: 'var(--bg1)', border: '1px solid var(--border)', borderRadius: 12,
-            padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 12,
-            transition: 'border-color 0.2s',
-          }}>
+          <div key={label} className="mini-stat">
             <span style={{ fontSize: 22 }}>{icon}</span>
             <div>
-              <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color, lineHeight: 1 }}>{count ?? 0}</div>
-              <div style={{ fontSize: 11, color: 'var(--text3)', marginTop: 3 }}>{label}</div>
+              <div className="mini-stat-value" style={{ color }}>{count ?? 0}</div>
+              <div className="mini-stat-label">{label}</div>
             </div>
           </div>
         ))}
@@ -138,14 +133,7 @@ export function AdminDashboard() {
                 <tr key={a.id}>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{
-                        width: 36, height: 36, borderRadius: 10,
-                        background: 'linear-gradient(135deg, var(--primary), var(--violet))',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: '#fff', fontWeight: 800, fontSize: 14, flexShrink: 0,
-                        fontFamily: 'var(--font-display)',
-                        boxShadow: '0 2px 8px rgba(245,166,35,0.25)',
-                      }}>
+                      <div className="avatar-initial">
                         {a.student?.name?.[0] || '?'}
                       </div>
                       <div>
@@ -500,12 +488,7 @@ export function AdminApplications() {
                 <tr key={a.id}>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{
-                        width: 36, height: 36, borderRadius: 9,
-                        background: 'linear-gradient(135deg, var(--primary), #8B5CF6)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: '#fff', fontWeight: 700, fontSize: 14, flexShrink: 0,
-                      }}>
+                      <div className="avatar-initial" style={{ borderRadius: 9 }}>
                         {a.student?.name?.[0] || '?'}
                       </div>
                       <div>
@@ -622,12 +605,7 @@ export function AdminStudents() {
                 <tr key={s.id}>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                      <div style={{
-                        width: 36, height: 36, borderRadius: 9,
-                        background: 'linear-gradient(135deg, var(--primary), #8B5CF6)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: '#fff', fontWeight: 700, fontSize: 14, flexShrink: 0,
-                      }}>{s.name[0]}</div>
+                      <div className="avatar-initial" style={{ borderRadius: 9 }}>{s.name[0]}</div>
                       <div>
                         <div style={{ fontSize: 13.5, fontWeight: 600 }}>{s.name}</div>
                         <div style={{ fontSize: 11.5, color: 'var(--text3)' }}>{s.email}</div>
@@ -685,6 +663,9 @@ export function Analytics() {
   const maxBar = Math.max(...(data?.monthly?.map((m) => m.count) || [1]), 1);
   const catEntries = Object.entries(data?.categories || {}).sort((a, b) => b[1] - a[1]);
   const maxCat = Math.max(...catEntries.map(([, v]) => v), 1);
+  const totalCategories = catEntries.reduce((sum, [, count]) => sum + count, 0);
+  const avgMonthly = data?.monthly?.length ? Math.round(data.monthly.reduce((sum, item) => sum + item.count, 0) / data.monthly.length) : 0;
+  const topScholarship = data?.topScholarships?.[0];
 
   return (
     <AppLayout title="Analytics" subtitle="Detailed scholarship portal insights">
@@ -693,6 +674,24 @@ export function Analytics() {
         <StatCard icon="💰" value={`₹${((data?.totalPoolAmount || 0) / 10000000).toFixed(1)}Cr`} label="Total Pool Value" bg="rgba(245,158,11,0.12)" />
         <StatCard icon="🎓" value={data?.totalScholarships ?? 0} label="Active Scholarships" bg="rgba(99,102,241,0.12)" />
         <StatCard icon="👥" value={data?.totalStudents ?? 0} label="Total Students" bg="rgba(56,189,248,0.12)" />
+      </div>
+
+      <div className="admin-signal-grid">
+        <div className="admin-signal-card">
+          <div className="admin-signal-label">Monthly Avg</div>
+          <div className="admin-signal-value">{avgMonthly}</div>
+          <div className="admin-signal-meta">Average applications per month across the last 6 months.</div>
+        </div>
+        <div className="admin-signal-card">
+          <div className="admin-signal-label">Top Demand</div>
+          <div className="admin-signal-value">{topScholarship?.applicants ?? 0}</div>
+          <div className="admin-signal-meta">{topScholarship ? topScholarship.name : 'No scholarship demand data yet.'}</div>
+        </div>
+        <div className="admin-signal-card">
+          <div className="admin-signal-label">Category Spread</div>
+          <div className="admin-signal-value">{catEntries.length}</div>
+          <div className="admin-signal-meta">{totalCategories} student profiles contributing to category analytics.</div>
+        </div>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20, marginBottom: 20 }}>
@@ -812,6 +811,8 @@ export function FraudDetection() {
   const high = active.filter((a) => a.risk === 'high').length;
   const medium = active.filter((a) => a.risk === 'medium').length;
   const dismissed = alerts.filter((a) => a.dismissed).length;
+  const total = alerts.length;
+  const activeRate = total > 0 ? Math.round((active.length / total) * 100) : 0;
 
   const riskColor = { high: 'var(--rose)', medium: 'var(--amber)', low: 'var(--emerald)' };
   const riskBg = { high: 'rgba(244,63,94,0.1)', medium: 'rgba(245,158,11,0.1)', low: 'rgba(16,185,129,0.1)' };
@@ -834,6 +835,24 @@ export function FraudDetection() {
         <StatCard icon="✓" value={dismissed} label="Dismissed" bg="rgba(99,102,241,0.1)" />
       </div>
 
+      <div className="admin-signal-grid">
+        <div className="admin-signal-card">
+          <div className="admin-signal-label">Open Incidents</div>
+          <div className="admin-signal-value" style={{ color: active.length ? 'var(--text1)' : 'var(--emerald)' }}>{active.length}</div>
+          <div className="admin-signal-meta">{activeRate}% of detected incidents still need reviewer action.</div>
+        </div>
+        <div className="admin-signal-card">
+          <div className="admin-signal-label">Highest Risk</div>
+          <div className="admin-signal-value" style={{ color: high > 0 ? 'var(--rose)' : 'var(--emerald)' }}>{high > 0 ? 'High' : 'Controlled'}</div>
+          <div className="admin-signal-meta">{high > 0 ? `${high} critical cases should be prioritized first.` : 'No critical cases in the current queue.'}</div>
+        </div>
+        <div className="admin-signal-card">
+          <div className="admin-signal-label">Review Throughput</div>
+          <div className="admin-signal-value">{dismissed}</div>
+          <div className="admin-signal-meta">Alerts already reviewed or cleared by the admin workflow.</div>
+        </div>
+      </div>
+
       {aiReport && (
         <div style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 12, padding: '18px 22px', marginBottom: 20 }}>
           <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'var(--primary-h)', marginBottom: 10 }}>🤖 AI Fraud Analysis</div>
@@ -841,23 +860,23 @@ export function FraudDetection() {
         </div>
       )}
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className="incident-list">
         {active.length === 0 ? (
           <div className="card"><div style={{ padding: 48, textAlign: 'center', color: 'var(--text3)', fontSize: 14 }}>✅ No active fraud alerts</div></div>
         ) : active.map((a) => (
-          <div key={a.id} className="card">
-            <div style={{ padding: '18px 24px', display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+          <div key={a.id} className="incident-card">
+            <div className="incident-card-top">
               <div style={{ width: 44, height: 44, borderRadius: 10, background: riskBg[a.risk], display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
                 {a.risk === 'high' ? '🚨' : '⚠️'}
               </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 4 }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14 }}>{a.student}</div>
+              <div className="incident-card-copy">
+                <div className="incident-card-title">
+                  <div className="incident-card-name">{a.student}</div>
                   <span style={{ fontSize: 11, padding: '3px 9px', background: riskBg[a.risk], color: riskColor[a.risk], borderRadius: 99, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>{a.risk} risk</span>
                   <span className="tag tag-neutral" style={{ fontSize: 11 }}>{a.type}</span>
                 </div>
-                <div style={{ fontSize: 13.5, color: 'var(--text2)', marginBottom: 10 }}>{a.detail}</div>
-                <div style={{ fontSize: 11, color: 'var(--text3)' }}>{new Date(a.time).toLocaleString('en-IN')}</div>
+                <div className="incident-card-desc">{a.detail}</div>
+                <div className="incident-card-time">{new Date(a.time).toLocaleString('en-IN')}</div>
               </div>
               <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
                 <button className="btn btn-ghost btn-sm" onClick={() => dismiss(a.id)}>Dismiss</button>

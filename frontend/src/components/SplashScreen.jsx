@@ -11,7 +11,7 @@ function generateBubbles(count) {
       delay: Math.random() * 8,
       duration: Math.random() * 12 + 8,
       opacity: Math.random() * 0.18 + 0.04,
-      color: ['#F5A623', '#0EA5E9', '#10B981', '#38BDF8', '#F59E0B'][Math.floor(Math.random() * 5)],
+      color: ['#34D399', '#22D3EE', '#4F46E5', '#10B981', '#7C3AED'][Math.floor(Math.random() * 5)],
     });
   }
   return bubbles;
@@ -126,7 +126,7 @@ export default function SplashScreen({ onDone }) {
           const depth = Math.sin(angle);
           const size = 2.5 + depth * 1.5;
           const alpha = 0.3 + depth * 0.4;
-          const colors = ['99,102,241', '16,185,129', '56,189,248', '139,92,246'];
+const colors = ['37,99,235', '59,130,246', '16,185,129', '147,51,234'];
           ctx.beginPath();
           ctx.arc(px, py, Math.max(size, 0.5), 0, Math.PI * 2);
           ctx.fillStyle = `rgba(${colors[ring % colors.length]},${alpha})`;

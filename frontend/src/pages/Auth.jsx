@@ -10,18 +10,18 @@ function AuthShell({ children, title, subtitle, step, totalSteps }) {
     <div className="auth-page" style={{ position: 'relative' }}>
       {/* Animated background orbs */}
       <div style={{ position: 'fixed', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
-        <div style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(245,166,35,0.07), transparent 70%)', top: -200, right: -100, borderRadius: '50%', animation: 'orbFloat 20s ease-in-out infinite' }} />
-        <div style={{ position: 'absolute', width: 400, height: 400, background: 'radial-gradient(circle, rgba(14,165,233,0.06), transparent 70%)', bottom: -100, left: -100, borderRadius: '50%', animation: 'orbFloat 25s ease-in-out infinite reverse' }} />
+        <div style={{ position: 'absolute', width: 600, height: 600, background: 'radial-gradient(circle, rgba(52,211,153,0.14), transparent 70%)', top: -200, right: -100, borderRadius: '50%', animation: 'orbFloat 20s ease-in-out infinite' }} />
+        <div style={{ position: 'absolute', width: 400, height: 400, background: 'radial-gradient(circle, rgba(34,211,238,0.1), transparent 70%)', bottom: -100, left: -100, borderRadius: '50%', animation: 'orbFloat 25s ease-in-out infinite reverse' }} />
         <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)', backgroundSize: '64px 64px', maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%)' }} />
       </div>
 
       <div className="auth-card" style={{ position: 'relative', zIndex: 1 }}>
         {/* Logo */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
-          <div style={{ width: 56, height: 56, background: 'linear-gradient(135deg, var(--primary) 0%, #E8890A 100%)', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, marginBottom: 14, boxShadow: '0 8px 24px rgba(245,166,35,0.4), inset 0 1px 0 rgba(255,255,255,0.2)', animation: 'logoFloat 3s ease-in-out infinite' }}>🎓</div>
+          <div style={{ width: 56, height: 56, background: 'linear-gradient(135deg, var(--primary) 0%, var(--teal) 100%)', borderRadius: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, marginBottom: 14, boxShadow: '0 10px 28px rgba(52,211,153,0.28), inset 0 1px 0 rgba(255,255,255,0.18)', animation: 'logoFloat 3s ease-in-out infinite', color: '#04221d' }}>🎓</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
             <span style={{ fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 800, color: 'var(--text1)' }}>NSMP</span>
-            <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: 1.5, background: 'var(--primary-dim)', color: 'var(--primary-h)', border: '1px solid rgba(245,166,35,0.25)', borderRadius: 4, padding: '2px 6px', fontFamily: 'var(--font-mono)' }}>BETA</span>
+            <span style={{ fontSize: 9, fontWeight: 800, letterSpacing: 1.5, background: 'var(--primary-dim)', color: 'var(--primary-h)', border: '1px solid rgba(52,211,153,0.22)', borderRadius: 4, padding: '2px 6px', fontFamily: 'var(--font-mono)' }}>PORTAL</span>
           </div>
           <h1 className="auth-title" style={{ marginBottom: 4 }}>{title}</h1>
           <p className="auth-sub" style={{ marginBottom: 0 }}>{subtitle}</p>
@@ -64,7 +64,7 @@ export function Login() {
   };
 
   return (
-    <AuthShell title="Welcome Back" subtitle="Sign in to your NSMP account">
+    <AuthShell title="Welcome Back" subtitle="Sign in to continue your scholarship journey">
       <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
         <div className="form-group">
           <label className="form-label">Email Address</label>
@@ -96,14 +96,14 @@ export function Login() {
         </div>
 
         <button className="btn btn-primary btn-lg btn-block" type="submit" disabled={loading} style={{ marginTop: 4 }}>
-          {loading ? <><Spinner size={18} color="#fff" /> Signing in...</> : 'Sign In →'}
+          {loading ? <><Spinner size={18} color="#fff" /> Signing in...</> : 'Sign In'}
         </button>
       </form>
 
       <div style={{ margin: '16px 0', padding: '12px 16px', background: 'var(--bg2)', borderRadius: 10, border: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{ fontSize: 16 }}>🔑</span>
         <div>
-          <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: 2 }}>Demo Admin</div>
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text3)', letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: 2 }}>Demo Admin Access</div>
           <span style={{ color: 'var(--text2)', fontSize: 12, fontFamily: 'var(--font-mono)' }}>admin@nsmp.gov.in / admin123</span>
         </div>
       </div>
@@ -166,7 +166,7 @@ export function Register() {
   return (
     <AuthShell
       title={step === 1 ? 'Create Account' : 'Verify Email'}
-      subtitle={step === 1 ? 'Join NSMP and find your perfect scholarship' : `OTP sent to ${form.email}`}
+      subtitle={step === 1 ? 'Create your account and unlock smarter scholarship recommendations' : `OTP sent to ${form.email}`}
       step={step}
       totalSteps={2}
     >
@@ -198,12 +198,12 @@ export function Register() {
               onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} />
           </div>
           <button className="btn btn-primary btn-lg btn-block" type="submit" disabled={loading} style={{ marginTop: 4 }}>
-            {loading ? <><Spinner size={18} color="#fff" /> Sending OTP...</> : 'Send OTP →'}
+            {loading ? <><Spinner size={18} color="#fff" /> Sending OTP...</> : 'Send OTP'}
           </button>
         </form>
       ) : (
         <form onSubmit={verifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ background: 'rgba(14,165,233,0.08)', border: '1px solid rgba(14,165,233,0.2)', borderRadius: 10, padding: '12px 16px', fontSize: 13, color: 'var(--teal-h)', display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div style={{ background: 'rgba(34,199,184,0.1)', border: '1px solid rgba(34,199,184,0.2)', borderRadius: 10, padding: '12px 16px', fontSize: 13, color: 'var(--teal-h)', display: 'flex', alignItems: 'center', gap: 10 }}>
             <span style={{ fontSize: 18 }}>📧</span>
             <span>OTP sent to <strong>{form.email}</strong></span>
           </div>
@@ -220,7 +220,7 @@ export function Register() {
             />
           </div>
           <button className="btn btn-primary btn-lg btn-block" type="submit" disabled={loading || otp.length < 6} style={{ marginTop: 4 }}>
-            {loading ? <><Spinner size={18} color="#fff" /> Verifying...</> : '✓ Verify & Create Account'}
+            {loading ? <><Spinner size={18} color="#fff" /> Verifying...</> : 'Verify & Create Account'}
           </button>
           <button type="button" className="btn btn-ghost btn-block" onClick={() => setStep(1)}>← Back</button>
         </form>
