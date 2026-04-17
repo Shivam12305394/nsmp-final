@@ -73,9 +73,13 @@ export function SmartMatches() {
           </div>
 
           {strategy && (
-            <div style={{ background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 12, padding: '18px 22px', marginBottom: 24 }}>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'var(--primary-h)', marginBottom: 10 }}>🤖 Your Personalized AI Strategy</div>
-              <p style={{ fontSize: 13.5, color: 'var(--text2)', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{strategy}</p>
+            <div style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.08), rgba(14,165,233,0.05))', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 14, padding: '20px 24px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, var(--violet), var(--teal))' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(99,102,241,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16 }}>🤖</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 14, color: 'var(--primary-h)' }}>Your Personalized AI Strategy</div>
+              </div>
+              <p style={{ fontSize: 13.5, color: 'var(--text2)', lineHeight: 1.75, whiteSpace: 'pre-wrap' }}>{strategy}</p>
             </div>
           )}
 
@@ -155,8 +159,26 @@ export function StudentApplications() {
     return { applied: 'active', review: 'idle', decided: 'idle' }[stepKey];
   };
 
+  const statusColors = { pending: 'var(--amber)', review: 'var(--teal)', approved: 'var(--emerald)', rejected: 'var(--rose)' };
+
   return (
     <AppLayout title="My Applications" subtitle="Track all your scholarship applications">
+      {/* Summary bar */}
+      {apps.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginBottom: 20 }}>
+          {[{ label: 'Pending', count: counts.pending, color: 'var(--amber)', bg: 'rgba(245,158,11,0.08)' },
+            { label: 'In Review', count: counts.review, color: 'var(--teal)', bg: 'rgba(14,165,233,0.08)' },
+            { label: 'Approved', count: counts.approved, color: 'var(--emerald)', bg: 'rgba(16,185,129,0.08)' },
+            { label: 'Rejected', count: counts.rejected, color: 'var(--rose)', bg: 'rgba(244,63,94,0.08)' },
+          ].map((s) => (
+            <div key={s.label} onClick={() => setTab(s.label.toLowerCase().replace(' ', ''))} style={{ background: s.bg, border: `1px solid ${s.color}22`, borderRadius: 12, padding: '12px 16px', cursor: 'pointer', transition: 'all 0.2s' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: s.color }}>{s.count}</div>
+              <div style={{ fontSize: 11.5, color: 'var(--text3)', marginTop: 2 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
       <div style={{ marginBottom: 20 }}>
         <div className="tabs">
           {tabList.map((t) => (
@@ -174,14 +196,16 @@ export function StudentApplications() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           {filtered.map((a) => (
-            <div key={a.id} className="card">
+            <div key={a.id} className="card" style={{ overflow: 'hidden' }}>
+              {/* Status accent bar */}
+              <div style={{ height: 3, background: `linear-gradient(90deg, ${statusColors[a.status] || 'var(--border)'}, transparent)` }} />
               <div style={{ padding: '18px 24px' }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12, marginBottom: 16 }}>
                   <div>
                     <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 16 }}>{a.scholarship?.name}</div>
                     <div style={{ fontSize: 12.5, color: 'var(--text3)', marginTop: 2 }}>{a.scholarship?.provider} · Applied {new Date(a.appliedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</div>
                   </div>
-                  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
                     <div style={{ fontSize: 18, fontWeight: 900, fontFamily: 'var(--font-display)', color: 'var(--emerald)' }}>₹{a.scholarship?.amount?.toLocaleString('en-IN')}</div>
                     <Badge status={a.status} />
                   </div>
@@ -363,44 +387,54 @@ export function StudentProfile() {
 
         {/* Sidebar: Completion */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <div className="card">
+          <div className="card" style={{ overflow: 'hidden' }}>
+            <div style={{ height: 3, background: `linear-gradient(90deg, ${completion >= 80 ? 'var(--emerald)' : completion >= 50 ? 'var(--primary)' : 'var(--amber)'}, transparent)` }} />
             <div className="card-body" style={{ textAlign: 'center' }}>
-              <div style={{ position: 'relative', width: 96, height: 96, margin: '0 auto 16px' }}>
-                <svg width={96} height={96}>
-                  <circle cx={48} cy={48} r={40} fill="none" stroke="var(--bg3)" strokeWidth={6} />
-                  <circle cx={48} cy={48} r={40} fill="none"
+              <div style={{ position: 'relative', width: 100, height: 100, margin: '0 auto 16px' }}>
+                <svg width={100} height={100}>
+                  <circle cx={50} cy={50} r={42} fill="none" stroke="var(--bg3)" strokeWidth={7} />
+                  <circle cx={50} cy={50} r={42} fill="none"
                     stroke={completion >= 80 ? 'var(--emerald)' : completion >= 50 ? 'var(--primary)' : 'var(--amber)'}
-                    strokeWidth={6} strokeLinecap="round"
-                    strokeDasharray={2 * Math.PI * 40}
-                    strokeDashoffset={2 * Math.PI * 40 - (completion / 100) * 2 * Math.PI * 40}
-                    transform="rotate(-90 48 48)"
+                    strokeWidth={7} strokeLinecap="round"
+                    strokeDasharray={2 * Math.PI * 42}
+                    strokeDashoffset={2 * Math.PI * 42 - (completion / 100) * 2 * Math.PI * 42}
+                    transform="rotate(-90 50 50)"
+                    style={{ transition: 'stroke-dashoffset 1s var(--ease-out), stroke 0.5s' }}
                   />
                 </svg>
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 900 }}>{completion}%</span>
-                  <span style={{ fontSize: 10, color: 'var(--text3)' }}>Complete</span>
+                  <span style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 900, color: completion >= 80 ? 'var(--emerald)' : completion >= 50 ? 'var(--primary-h)' : 'var(--amber)' }}>{completion}%</span>
+                  <span style={{ fontSize: 9, color: 'var(--text3)', letterSpacing: 0.5, textTransform: 'uppercase', fontWeight: 700 }}>Complete</span>
                 </div>
               </div>
-              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, marginBottom: 6 }}>Profile Strength</div>
-              <div style={{ fontSize: 12.5, color: 'var(--text2)', lineHeight: 1.6 }}>
-                {completion >= 80 ? '🎉 Excellent! You\'ll get highly accurate AI matches.' : completion >= 50 ? '👍 Good. Add more details for better matches.' : '⚠️ Low completion — AI accuracy will be limited.'}
+              <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, marginBottom: 6, fontSize: 14 }}>Profile Strength</div>
+              <div style={{ fontSize: 12.5, color: 'var(--text2)', lineHeight: 1.6, marginBottom: 12 }}>
+                {completion >= 80 ? '🎉 Excellent! Highly accurate AI matches.' : completion >= 50 ? '👍 Good. Add more details for better matches.' : '⚠️ Low — AI accuracy will be limited.'}
               </div>
+              {completion < 100 && (
+                <div style={{ height: 4, background: 'var(--bg3)', borderRadius: 99, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${completion}%`, background: completion >= 80 ? 'var(--emerald)' : completion >= 50 ? 'linear-gradient(90deg, var(--primary), var(--amber))' : 'var(--amber)', borderRadius: 99, transition: 'width 1s var(--ease-out)' }} />
+                </div>
+              )}
             </div>
           </div>
 
           <div className="card">
             <div className="card-header"><span className="card-title" style={{ fontSize: 13 }}>Required Fields</span></div>
             <div className="card-body" style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-              {fields.map((f) => (
-                <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5 }}>
-                  <span style={{ color: (p[f] && p[f] !== 0 && p[f] !== '') ? 'var(--emerald)' : 'var(--text3)', fontSize: 14 }}>
-                    {(p[f] && p[f] !== 0 && p[f] !== '') ? '✓' : '○'}
-                  </span>
-                  <span style={{ color: (p[f] && p[f] !== 0 && p[f] !== '') ? 'var(--text1)' : 'var(--text3)', textTransform: 'capitalize' }}>
-                    {f === 'annualIncome' ? 'Annual Income' : f.charAt(0).toUpperCase() + f.slice(1)}
-                  </span>
-                </div>
-              ))}
+              {fields.map((f) => {
+                const done = p[f] && p[f] !== 0 && p[f] !== '';
+                return (
+                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12.5, padding: '4px 0' }}>
+                    <div style={{ width: 18, height: 18, borderRadius: 5, background: done ? 'var(--emerald)' : 'var(--bg3)', border: `1px solid ${done ? 'var(--emerald)' : 'var(--border)'}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, transition: 'all 0.3s' }}>
+                      {done && <span style={{ color: '#fff', fontSize: 10, fontWeight: 800 }}>✓</span>}
+                    </div>
+                    <span style={{ color: done ? 'var(--text1)' : 'var(--text3)', textTransform: 'capitalize', transition: 'color 0.3s' }}>
+                      {f === 'annualIncome' ? 'Annual Income' : f.charAt(0).toUpperCase() + f.slice(1)}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -449,19 +483,26 @@ export function Documents() {
             onDragLeave={() => setDragging(false)}
             onDrop={(e) => { e.preventDefault(); setDragging(false); handleFiles(e.dataTransfer.files); }}
             style={{
-              border: `2px dashed ${dragging ? 'var(--primary)' : 'var(--border)'}`,
-              borderRadius: 16,
-              padding: '40px 24px',
+              border: `2px dashed ${dragging ? 'var(--primary)' : 'rgba(255,255,255,0.1)'}`,
+              borderRadius: 18,
+              padding: '48px 24px',
               textAlign: 'center',
-              background: dragging ? 'var(--primary-dim)' : 'var(--bg1)',
-              transition: 'all 0.2s',
+              background: dragging
+                ? 'linear-gradient(135deg, rgba(245,166,35,0.08), rgba(245,166,35,0.04))'
+                : 'linear-gradient(135deg, rgba(255,255,255,0.02), transparent)',
+              transition: 'all 0.25s var(--ease-out)',
               marginBottom: 20,
               cursor: 'pointer',
+              position: 'relative',
+              overflow: 'hidden',
             }}
             onClick={() => document.getElementById('file-input').click()}
           >
-            <div style={{ fontSize: 36, marginBottom: 12 }}>📎</div>
-            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, marginBottom: 6 }}>Drop files here or click to upload</div>
+            {dragging && <div style={{ position: 'absolute', inset: 0, background: 'rgba(245,166,35,0.04)', animation: 'pulse 1s infinite' }} />}
+            <div style={{ fontSize: 44, marginBottom: 14, filter: dragging ? 'drop-shadow(0 0 12px rgba(245,166,35,0.5))' : 'none', transition: 'filter 0.3s' }}>📤</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: 15, marginBottom: 6, color: dragging ? 'var(--primary-h)' : 'var(--text1)' }}>
+              {dragging ? 'Drop files here!' : 'Drop files here or click to upload'}
+            </div>
             <div style={{ fontSize: 13, color: 'var(--text3)' }}>PDF, JPG, PNG · Max 5MB per file</div>
             <input id="file-input" type="file" multiple accept=".pdf,.jpg,.jpeg,.png" style={{ display: 'none' }}
               onChange={(e) => handleFiles(e.target.files)} />

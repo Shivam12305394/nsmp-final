@@ -93,13 +93,14 @@ export default function BrowseScholarships() {
 
       {/* Profile incomplete nudge */}
       {!profileFilled && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(245,166,35,0.07)', border: '1px solid rgba(245,166,35,0.2)', borderRadius: 12, padding: '12px 18px', marginBottom: 20 }}>
-          <span style={{ fontSize: 20 }}>💡</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, background: 'linear-gradient(135deg, rgba(245,166,35,0.08), rgba(245,166,35,0.04))', border: '1px solid rgba(245,166,35,0.2)', borderRadius: 14, padding: '14px 20px', marginBottom: 20, position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, var(--primary), transparent)' }} />
+          <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(245,166,35,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, flexShrink: 0 }}>💡</div>
           <div style={{ flex: 1 }}>
-            <span style={{ fontWeight: 700, color: 'var(--primary-h)', fontSize: 13.5 }}>Complete your profile</span>
-            <span style={{ fontSize: 13, color: 'var(--text2)', marginLeft: 6 }}>to see your match score on every scholarship</span>
+            <div style={{ fontWeight: 700, color: 'var(--primary-h)', fontSize: 13.5 }}>Complete your profile to unlock match scores</div>
+            <div style={{ fontSize: 12.5, color: 'var(--text2)', marginTop: 2 }}>See exactly how well each scholarship fits you</div>
           </div>
-          <a href="/profile" className="btn btn-primary btn-sm">Update Profile →</a>
+          <a href="/profile" className="btn btn-primary btn-sm" style={{ flexShrink: 0 }}>Update Profile →</a>
         </div>
       )}
       {/* Search always visible */}
