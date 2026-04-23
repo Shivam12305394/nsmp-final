@@ -4,6 +4,7 @@ import { MatchRing, ScholarshipCard, Badge, Spinner, EmptyState, Alert, Toggle }
 import { scholarshipAPI, applicationAPI, authAPI } from '../../utils/api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
+import { jsPDF } from 'jspdf';
 
 // ═══════════════════════════════════════════════════════
 // AI MATCHES
@@ -49,6 +50,116 @@ export function SmartMatches() {
       setStrategy(err.response?.data?.message || 'Network error. Please try again.');
     }
     setStratLoading(false);
+  };
+
+  const sanitize = (str) => String(str || 'N/A').replace(/₹/g, 'Rs.').replace(/[^\x00-\x7F]/g, '');
+
+  const downloadPDF = (m) => {
+    const doc = new jsPDF();
+    const pageW = doc.internal.pageSize.getWidth();
+    doc.setFillColor(30, 30, 46);
+    doc.rect(0, 0, pageW, 40, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('NSMP - AI Match Report', 14, 18);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('National Scholarship Matching Portal', 14, 28);
+    doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')}`, pageW - 14, 28, { align: 'right' });
+
+    let y = 52;
+    doc.setTextColor(30, 30, 46);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    const nameLines = doc.splitTextToSize(m.name, pageW - 28);
+    doc.text(nameLines, 14, y);
+    y += nameLines.length * 8 + 2;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 100, 120);
+    doc.text(m.provider, 14, y);
+    y += 12;
+
+    const scoreColor = m.matchScore >= 85 ? [52, 211, 153] : m.matchScore >= 60 ? [34, 211, 238] : [245, 158, 11];
+    doc.setFillColor(...scoreColor);
+    doc.roundedRect(14, y, 90, 14, 3, 3, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`AI Match Score: ${m.matchScore}%`, 18, y + 9);
+    y += 22;
+
+    const fields = [
+      ['Amount', `Rs. ${m.amount.toLocaleString('en-IN')} per year`],
+      ['Deadline', new Date(m.deadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })],
+      ['Source', m.source || 'Government'],
+      ['Location', m.location],
+      ['Min. Marks', `${m.minMarks}%`],
+      ['Max. Income', `Rs. ${(m.maxIncome / 100000).toFixed(1)} Lakh/year`],
+      ['Gender', m.gender],
+      ['Categories', m.categories?.join(', ')],
+      ['Courses', m.courses?.join(', ')],
+    ];
+
+    doc.setDrawColor(220, 220, 235);
+    doc.setLineWidth(0.3);
+    doc.line(14, y, pageW - 14, y);
+    y += 8;
+
+    doc.setTextColor(30, 30, 46);
+    fields.forEach(([label, value]) => {
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(100, 100, 120);
+      doc.text(label.toUpperCase(), 14, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(30, 30, 46);
+      doc.setFontSize(10);
+      const valLines = doc.splitTextToSize(sanitize(value), pageW - 80);
+      doc.text(valLines, 80, y);
+      y += Math.max(valLines.length * 6, 8) + 2;
+    });
+
+    if (m.reasons?.length > 0) {
+      y += 4;
+      doc.setDrawColor(220, 220, 235);
+      doc.line(14, y, pageW - 14, y);
+      y += 10;
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(30, 30, 46);
+      doc.text('Why You Match', 14, y);
+      y += 8;
+      m.reasons.forEach((r) => {
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(60, 60, 80);
+        const lines = doc.splitTextToSize(sanitize(r), pageW - 28);
+        doc.text(lines, 14, y);
+        y += lines.length * 6 + 3;
+      });
+    }
+
+    [['Eligibility Criteria', m.eligibility], ['Description', m.description], ['Benefits', m.benefits]].forEach(([heading, text]) => {
+      if (!text) return;
+      y += 6;
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(30, 30, 46);
+      doc.text(heading, 14, y);
+      y += 7;
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(60, 60, 80);
+      const lines = doc.splitTextToSize(sanitize(text), pageW - 28);
+      if (y + lines.length * 6 > 270) { doc.addPage(); y = 20; }
+      doc.text(lines, 14, y);
+      y += lines.length * 6 + 8;
+    });
+
+    doc.save(`${m.name.replace(/[^a-z0-9]/gi, '_')}_AIMatch.pdf`);
+    toast.success('PDF downloaded!');
   };
 
   const strongMatches = matches.filter((m) => m.matchScore >= 85).length;
@@ -146,13 +257,18 @@ export function SmartMatches() {
                     <span className={`tag ${m.matchScore >= 85 ? 'tag-emerald' : 'tag-neutral'}`} style={{ fontSize: 11 }}>
                       {m.matchScore >= 85 ? 'High Priority' : 'Worth Reviewing'}
                     </span>
-                    {appliedIds.has(m.id) ? (
-                      <span className="tag tag-emerald" style={{ padding: '8px 14px', fontSize: 12 }}>✓ Applied</span>
-                    ) : (
-                      <button className="btn btn-primary btn-sm" onClick={() => apply(m.id)} disabled={applying === m.id}>
-                        {applying === m.id ? <><Spinner size={14} color="#fff" /> Applying...</> : '⚡ Apply Now'}
+                    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <button className="btn btn-ghost btn-sm" onClick={() => downloadPDF(m)} title="Download PDF">
+                        ⬇ PDF
                       </button>
-                    )}
+                      {appliedIds.has(m.id) ? (
+                        <span className="tag tag-emerald" style={{ padding: '8px 14px', fontSize: 12 }}>✓ Applied</span>
+                      ) : (
+                        <button className="btn btn-primary btn-sm" onClick={() => apply(m.id)} disabled={applying === m.id}>
+                          {applying === m.id ? <><Spinner size={14} color="#fff" /> Applying...</> : '⚡ Apply Now'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>

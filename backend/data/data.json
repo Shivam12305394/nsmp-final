@@ -54,15 +54,15 @@
       "id": "74bb3b33-f835-404d-969f-91d3fca1d80f",
       "name": "manish das",
       "email": "shiva41206073@gmail.com",
-      "password": "$2a$10$7O412O6kvV4imlsdCN4YTeFlYHdB4HfWBkcYHUsXtPu1kvyaIGiVK",
+      "password": "$2a$10$/MdIVqbdonWMixbzBAStmOXThDr82CxpStw/jklYCXA6fhsEzkiUS",
       "phone": "9117762335",
       "role": "student",
       "profile": {
-        "marks": 60,
-        "cgpa": 10,
+        "marks": 70,
+        "cgpa": 70,
         "annualIncome": 100000,
         "category": "General",
-        "course": "Engineering",
+        "course": "Commerce",
         "gender": "Male",
         "state": "Bihar",
         "disability": false,
@@ -91,11 +91,54 @@
         "address": ""
       },
       "createdAt": "2026-04-16T13:36:07.546Z"
+    },
+    {
+      "id": "d743a7ae-a259-4cf2-bc24-c068132f2f02",
+      "name": "shivam",
+      "email": "sm3838098@gmail.com",
+      "password": "$2a$10$zn9GaMkg0lymYcMnmR94UOXpctMiFG6EXDnUVTkgBK5LCkqVNIA6m",
+      "phone": "9117762335",
+      "role": "student",
+      "profile": {
+        "marks": 0,
+        "cgpa": 0,
+        "annualIncome": 0,
+        "category": "",
+        "course": "",
+        "gender": "",
+        "state": "",
+        "disability": false,
+        "institution": "",
+        "address": ""
+      },
+      "createdAt": "2026-04-22T12:40:57.976Z"
+    },
+    {
+      "id": "23322145-41ef-4aae-b70b-d8d966631b87",
+      "name": "subham",
+      "email": "thelouisofficial@gmail.com",
+      "password": "$2a$10$kDPO6GNMx8tbi88CXSkyS.zmHgMsqqUwU..d0rMysDBwgTVC0W0E.",
+      "phone": "9117762335",
+      "role": "student",
+      "profile": {
+        "marks": 0,
+        "cgpa": 0,
+        "annualIncome": 0,
+        "category": "",
+        "course": "",
+        "gender": "",
+        "state": "",
+        "disability": false,
+        "institution": "",
+        "address": ""
+      },
+      "createdAt": "2026-04-22T14:20:21.149Z"
     }
   ],
   "scholarships": [
     {
       "id": "sch-006",
+      "source": "Government",
       "name": "National Means-cum-Merit Scholarship (NMMS)",
       "provider": "Ministry of Education",
       "amount": 12000,
@@ -120,12 +163,13 @@
       "description": "NMMS awards scholarships to meritorious students of economically weaker sections to arrest dropout at Class 8 and encourage continuation.",
       "eligibility": "Class 9 students, min 55% in Class 8, income below ₹1.5 LPA, govt school",
       "benefits": "₹12,000/year (₹1,000/month) up to Class 12",
-      "applicants": 96000,
+      "applicants": 96001,
       "featured": false,
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
       "id": "sch-004",
+      "source": "Government",
       "name": "Central Sector Scheme of Scholarship (CSSS)",
       "provider": "Ministry of Education",
       "amount": 20000,
@@ -159,6 +203,7 @@
     },
     {
       "id": "sch-020",
+      "source": "Government",
       "name": "NSP Pre-Matric Scholarship for SC Students",
       "provider": "Ministry of Social Justice & Empowerment",
       "amount": 3500,
@@ -188,6 +233,7 @@
     },
     {
       "id": "sch-001",
+      "source": "Government",
       "name": "NSP Post-Matric Scholarship for SC Students",
       "provider": "Ministry of Social Justice & Empowerment",
       "amount": 23000,
@@ -218,6 +264,7 @@
     },
     {
       "id": "sch-002",
+      "source": "Government",
       "name": "NSP Post-Matric Scholarship for ST Students",
       "provider": "Ministry of Tribal Affairs",
       "amount": 23000,
@@ -248,6 +295,7 @@
     },
     {
       "id": "sch-011",
+      "source": "Government",
       "name": "Post-Matric Scholarship for Minorities",
       "provider": "Ministry of Minority Affairs",
       "amount": 30000,
@@ -279,6 +327,7 @@
     },
     {
       "id": "sch-003",
+      "source": "Government",
       "name": "PM YASASVI Scholarship Scheme",
       "provider": "Ministry of Social Justice & Empowerment",
       "amount": 125000,
@@ -308,7 +357,39 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-state-001",
+      "source": "State",
+      "name": "Maharashtra Swadhar Yojana",
+      "provider": "Social Justice Dept, Maharashtra",
+      "amount": 51000,
+      "deadline": "2025-11-30",
+      "minMarks": 60,
+      "maxIncome": 250000,
+      "categories": [
+        "SC",
+        "OBC"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law"
+      ],
+      "gender": "All",
+      "location": "Maharashtra",
+      "disability": false,
+      "description": "Maharashtra government scholarship for SC/OBC students living outside their hometown for higher education, covering accommodation and food expenses.",
+      "eligibility": "SC/OBC students from Maharashtra, studying outside hometown, income below ₹2.5 LPA",
+      "benefits": "₹51,000/year for accommodation + food + miscellaneous expenses",
+      "applicants": 18400,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-012",
+      "source": "Government",
       "name": "Merit-cum-Means Scholarship for Minorities",
       "provider": "Ministry of Minority Affairs",
       "amount": 30000,
@@ -339,7 +420,43 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-private-001",
+      "source": "Private",
+      "name": "Tata Capital Pankh Scholarship",
+      "provider": "Tata Capital Limited",
+      "amount": 50000,
+      "deadline": "2025-08-31",
+      "minMarks": 60,
+      "maxIncome": 400000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law",
+        "Pharmacy"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Tata Capital Pankh Scholarship supports meritorious students from economically weaker sections to pursue their dreams in higher education.",
+      "eligibility": "Class 11-12 or UG/Diploma students, min 60%, income below ₹4 LPA",
+      "benefits": "Up to ₹50,000/year for tuition and living expenses",
+      "applicants": 15300,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-005",
+      "source": "Government",
       "name": "Begum Hazrat Mahal National Scholarship",
       "provider": "Maulana Azad Education Foundation",
       "amount": 12000,
@@ -372,7 +489,41 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-state-002",
+      "source": "State",
+      "name": "Tamil Nadu Chief Minister's Scholarship",
+      "provider": "Government of Tamil Nadu",
+      "amount": 25000,
+      "deadline": "2025-10-31",
+      "minMarks": 70,
+      "maxIncome": 200000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts"
+      ],
+      "gender": "All",
+      "location": "Tamil Nadu",
+      "disability": false,
+      "description": "Tamil Nadu state scholarship for meritorious students pursuing higher education, awarded by the Chief Minister's office.",
+      "eligibility": "Tamil Nadu domicile, min 70% in Class 12, income below ₹2 LPA",
+      "benefits": "₹25,000/year for 3 years",
+      "applicants": 12600,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-013",
+      "source": "Government",
       "name": "Dr. Ambedkar Post-Matric Scholarship (EBC)",
       "provider": "Ministry of Social Justice & Empowerment",
       "amount": 23000,
@@ -402,7 +553,40 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-private-002",
+      "source": "Private",
+      "name": "Reliance Foundation Undergraduate Scholarship",
+      "provider": "Reliance Foundation",
+      "amount": 200000,
+      "deadline": "2025-12-31",
+      "minMarks": 75,
+      "maxIncome": 1500000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Science",
+        "Commerce",
+        "Arts"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Reliance Foundation Undergraduate Scholarships support exceptional students pursuing undergraduate studies in India's top universities.",
+      "eligibility": "Class 12 pass with 75%+, admitted to top Indian universities, income below ₹15 LPA",
+      "benefits": "Up to ₹2,00,000/year + mentorship + internship opportunities",
+      "applicants": 11700,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-008",
+      "source": "Government",
       "name": "Pragati Scholarship for Girl Students (AICTE)",
       "provider": "All India Council for Technical Education",
       "amount": 50000,
@@ -432,6 +616,7 @@
     },
     {
       "id": "sch-010",
+      "source": "Government",
       "name": "INSPIRE Scholarship for Higher Education (SHE)",
       "provider": "Department of Science & Technology",
       "amount": 80000,
@@ -459,7 +644,40 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-state-003",
+      "source": "State",
+      "name": "Rajasthan Mukhyamantri Ucch Shiksha Scholarship",
+      "provider": "Government of Rajasthan",
+      "amount": 10000,
+      "deadline": "2025-11-15",
+      "minMarks": 60,
+      "maxIncome": 250000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Science",
+        "Commerce",
+        "Arts"
+      ],
+      "gender": "All",
+      "location": "Rajasthan",
+      "disability": false,
+      "description": "Rajasthan state scholarship for students who scored above 60% in Class 12 Rajasthan Board and are pursuing higher education.",
+      "eligibility": "Rajasthan domicile, Rajasthan Board Class 12 with 60%+, income below ₹2.5 LPA",
+      "benefits": "₹10,000/year for 5 years",
+      "applicants": 9800,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-016",
+      "source": "Government",
       "name": "National Fellowship for Higher Education of ST Students",
       "provider": "Ministry of Tribal Affairs",
       "amount": 40000,
@@ -488,7 +706,69 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-private-003",
+      "source": "Private",
+      "name": "Infosys Foundation Scholarship",
+      "provider": "Infosys Foundation",
+      "amount": 60000,
+      "deadline": "2025-09-30",
+      "minMarks": 70,
+      "maxIncome": 600000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Science"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Infosys Foundation scholarship for students pursuing engineering and science degrees, focusing on students from rural and semi-urban areas.",
+      "eligibility": "Engineering/Science UG students, min 70%, income below ₹6 LPA, rural/semi-urban background preferred",
+      "benefits": "₹60,000/year for 4 years + career guidance",
+      "applicants": 8900,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-state-004",
+      "source": "State",
+      "name": "West Bengal Aikyashree Scholarship",
+      "provider": "Government of West Bengal",
+      "amount": 10000,
+      "deadline": "2025-12-15",
+      "minMarks": 50,
+      "maxIncome": 200000,
+      "categories": [
+        "General",
+        "OBC"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law"
+      ],
+      "gender": "All",
+      "location": "West Bengal",
+      "disability": false,
+      "description": "West Bengal state scholarship for minority community students pursuing pre-matric and post-matric education.",
+      "eligibility": "Minority community, West Bengal domicile, income below ₹2 LPA",
+      "benefits": "₹10,000/year + book grant",
+      "applicants": 8200,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-007",
+      "source": "Government",
       "name": "Ishan Uday Special Scholarship (NE Region)",
       "provider": "University Grants Commission (UGC)",
       "amount": 54000,
@@ -521,6 +801,7 @@
     },
     {
       "id": "sch-015",
+      "source": "Government",
       "name": "Indira Gandhi Scholarship for Single Girl Child (UGC)",
       "provider": "University Grants Commission (UGC)",
       "amount": 36200,
@@ -553,7 +834,39 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-private-004",
+      "source": "Private",
+      "name": "Wipro Cares Scholarship",
+      "provider": "Wipro Cares",
+      "amount": 40000,
+      "deadline": "2025-10-15",
+      "minMarks": 65,
+      "maxIncome": 500000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Science",
+        "Commerce"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Wipro Cares scholarship for meritorious students from underprivileged backgrounds pursuing higher education in STEM and commerce fields.",
+      "eligibility": "UG students, min 65%, income below ₹5 LPA",
+      "benefits": "₹40,000/year + skill development workshops",
+      "applicants": 6700,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-014",
+      "source": "Government",
       "name": "Kishore Vaigyanik Protsahan Yojana (KVPY)",
       "provider": "Indian Institute of Science (IISc)",
       "amount": 84000,
@@ -582,6 +895,7 @@
     },
     {
       "id": "sch-018",
+      "source": "Government",
       "name": "Disability Scholarship — NHFDC",
       "provider": "National Handicapped Finance & Development Corporation",
       "amount": 60000,
@@ -616,6 +930,7 @@
     },
     {
       "id": "sch-009",
+      "source": "Government",
       "name": "Saksham Scholarship for Differently Abled (AICTE)",
       "provider": "All India Council for Technical Education",
       "amount": 50000,
@@ -644,7 +959,42 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-intl-001",
+      "source": "International",
+      "name": "Commonwealth Scholarship (UK)",
+      "provider": "Commonwealth Scholarship Commission",
+      "amount": 2500000,
+      "deadline": "2025-12-01",
+      "minMarks": 75,
+      "maxIncome": 2000000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Medical",
+        "Science",
+        "Commerce",
+        "Arts",
+        "Law"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Commonwealth Scholarships for Indian students to pursue Master's or PhD studies at UK universities, funded by the UK government.",
+      "eligibility": "Indian citizen, UG degree with first class, applying for Master's/PhD in UK, income below ₹20 LPA",
+      "benefits": "Full tuition + living allowance + airfare + thesis grant (approx ₹25L/year)",
+      "applicants": 3200,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-019",
+      "source": "Government",
       "name": "Maulana Azad National Fellowship (MANF)",
       "provider": "Ministry of Minority Affairs",
       "amount": 312000,
@@ -671,7 +1021,41 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-intl-002",
+      "source": "International",
+      "name": "Fulbright-Nehru Master's Fellowship (USA)",
+      "provider": "United States-India Educational Foundation",
+      "amount": 3000000,
+      "deadline": "2025-07-15",
+      "minMarks": 75,
+      "maxIncome": 2500000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Science",
+        "Arts",
+        "Law",
+        "Commerce"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Fulbright-Nehru Master's Fellowships for outstanding Indians to pursue Master's degree programs at US universities.",
+      "eligibility": "Indian citizen, Bachelor's degree with 55%+, 3 years work experience, applying for US Master's",
+      "benefits": "Full tuition + J-1 visa support + living stipend + airfare (approx ₹30L/year)",
+      "applicants": 2800,
+      "featured": true,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "sch-017",
+      "source": "Government",
       "name": "Swanath Scholarship — Orphans & Armed Forces (AICTE)",
       "provider": "All India Council for Technical Education",
       "amount": 50000,
@@ -700,7 +1084,71 @@
       "createdAt": "2026-01-01T00:00:00.000Z"
     },
     {
+      "id": "sch-intl-003",
+      "source": "International",
+      "name": "DAAD Scholarship (Germany)",
+      "provider": "German Academic Exchange Service",
+      "amount": 1800000,
+      "deadline": "2025-10-31",
+      "minMarks": 70,
+      "maxIncome": 2000000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Science",
+        "Arts"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "DAAD scholarships for Indian students to pursue postgraduate studies or research in Germany. Germany offers tuition-free education at public universities.",
+      "eligibility": "Indian citizen, Bachelor's degree with 70%+, applying for Master's/PhD in Germany",
+      "benefits": "Monthly stipend €934 + travel allowance + health insurance (approx ₹18L/year)",
+      "applicants": 2100,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "sch-intl-004",
+      "source": "International",
+      "name": "Erasmus Mundus Joint Master Scholarship (EU)",
+      "provider": "European Commission",
+      "amount": 2200000,
+      "deadline": "2026-01-15",
+      "minMarks": 70,
+      "maxIncome": 2500000,
+      "categories": [
+        "General",
+        "OBC",
+        "SC",
+        "ST",
+        "EWS"
+      ],
+      "courses": [
+        "Engineering",
+        "Science",
+        "Arts",
+        "Commerce"
+      ],
+      "gender": "All",
+      "location": "All India",
+      "disability": false,
+      "description": "Erasmus Mundus scholarships for Indian students to pursue joint Master's programs across multiple European universities.",
+      "eligibility": "Indian citizen, Bachelor's degree with 70%+, applying for Erasmus Mundus Joint Master's program",
+      "benefits": "Full tuition + €1,000/month living allowance + travel costs (approx ₹22L/year)",
+      "applicants": 1900,
+      "featured": false,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
       "id": "5fce0cb2-acd6-459c-94a6-fa5e5e77ec64",
+      "source": "Government",
       "applicants": 0,
       "createdAt": "2026-04-16T13:06:57.199Z",
       "name": "BCA Merit Scholarship",
@@ -741,10 +1189,19 @@
       "id": "ce86e0ed-9b3e-4a60-bd01-8d899ddd7566",
       "studentId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
       "scholarshipId": "sch-007",
-      "status": "pending",
+      "status": "approved",
       "reviewNote": "",
       "appliedAt": "2026-04-17T08:50:48.709Z",
-      "updatedAt": "2026-04-17T08:50:48.709Z"
+      "updatedAt": "2026-04-17T13:41:13.700Z"
+    },
+    {
+      "id": "0693ce53-d484-4b04-8394-c2981cd3f416",
+      "studentId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "scholarshipId": "sch-006",
+      "status": "approved",
+      "reviewNote": "",
+      "appliedAt": "2026-04-17T13:38:13.705Z",
+      "updatedAt": "2026-04-22T06:52:20.719Z"
     }
   ],
   "notifications": [
@@ -810,6 +1267,69 @@
       "type": "success",
       "read": false,
       "createdAt": "2026-04-17T08:50:48.710Z"
+    },
+    {
+      "id": "98c224fc-b495-4ec6-97c3-694d6d578452",
+      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "title": "Application Submitted ✅",
+      "message": "Your application for \"National Means-cum-Merit Scholarship (NMMS)\" has been submitted successfully.",
+      "type": "success",
+      "read": false,
+      "createdAt": "2026-04-17T13:38:13.705Z"
+    },
+    {
+      "id": "c230fbff-ed85-4d78-8ece-4b40e446ca66",
+      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "title": "Application Approved",
+      "message": "🎉 Congratulations! Your application for \"Ishan Uday Special Scholarship (NE Region)\" has been APPROVED!",
+      "type": "success",
+      "read": false,
+      "createdAt": "2026-04-17T13:41:13.701Z"
+    },
+    {
+      "id": "e13022f8-87d9-4f35-af6a-f58c74d678b5",
+      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "title": "Application Approved",
+      "message": "🎉 Congratulations! Your application for \"National Means-cum-Merit Scholarship (NMMS)\" has been APPROVED!",
+      "type": "success",
+      "read": false,
+      "createdAt": "2026-04-22T06:52:20.723Z"
+    },
+    {
+      "id": "1bae9bb7-10b6-4d17-b39f-ad4269e26996",
+      "userId": "d743a7ae-a259-4cf2-bc24-c068132f2f02",
+      "title": "Welcome to NSMP! 🎓",
+      "message": "Complete your profile to get AI-powered scholarship recommendations.",
+      "type": "info",
+      "read": false,
+      "createdAt": "2026-04-22T12:40:57.976Z"
+    },
+    {
+      "id": "b503b105-49fc-43a2-9fd7-3e0c6dc1dcd7",
+      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "title": "Password Changed 🔐",
+      "message": "Your NSMP account password was successfully reset.",
+      "type": "info",
+      "read": false,
+      "createdAt": "2026-04-22T13:41:08.159Z"
+    },
+    {
+      "id": "423b9afc-fc7f-49de-82f1-b95eb204a91b",
+      "userId": "74bb3b33-f835-404d-969f-91d3fca1d80f",
+      "title": "Password Changed 🔐",
+      "message": "Your NSMP account password was successfully reset.",
+      "type": "info",
+      "read": false,
+      "createdAt": "2026-04-22T14:19:06.701Z"
+    },
+    {
+      "id": "4c9c3eb6-f9cc-40d6-b2f2-424035cd0878",
+      "userId": "23322145-41ef-4aae-b70b-d8d966631b87",
+      "title": "Welcome to NSMP! 🎓",
+      "message": "Complete your profile to get AI-powered scholarship recommendations.",
+      "type": "info",
+      "read": false,
+      "createdAt": "2026-04-22T14:20:21.150Z"
     }
   ]
 }
