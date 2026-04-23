@@ -1,111 +1,139 @@
-const express = require('express');
-const { v4: uuidv4 } = require('uuid');
-const db = require('../data/db');
+const express      = require('express');
+const Application  = require('../models/Application');
+const Scholarship  = require('../models/Scholarship');
+const Notification = require('../models/Notification');
 const { authMiddleware, adminOnly } = require('../middleware/auth');
 
 const router = express.Router();
 
-// GET /api/applications/my — student's own applications
-router.get('/my', authMiddleware, (req, res) => {
-  const apps = db.applications
-    .filter((a) => a.studentId === req.user.id)
-    .map((a) => {
-      const scholarship = db.scholarships.find((s) => s.id === a.scholarshipId);
-      return { ...a, scholarship };
+// GET /api/applications/my
+router.get('/my', authMiddleware, async (req, res) => {
+  try {
+    const apps = await Application.find({ studentId: req.user.id })
+      .populate('scholarshipId')
+      .sort({ appliedAt: -1 })
+      .lean();
+    // Rename scholarshipId -> scholarship for frontend compatibility
+    res.json(apps.map(a => ({ 
+      ...a, 
+      id: a._id,
+      scholarship: a.scholarshipId, 
+      scholarshipId: a.scholarshipId?._id 
+    })));
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// GET /api/applications (admin)
+router.get('/', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const { status, search } = req.query;
+    const query = {};
+    if (status && status !== 'all') query.status = status;
+
+    let apps = await Application.find(query)
+      .populate('scholarshipId')
+      .populate('studentId', '-password')
+      .sort({ appliedAt: -1 })
+      .lean();
+
+    if (search) {
+      const q = search.toLowerCase();
+      apps = apps.filter(a =>
+        a.studentId?.name?.toLowerCase().includes(q) ||
+        a.studentId?.email?.toLowerCase().includes(q)
+      );
+    }
+
+    res.json(apps.map(a => ({
+      ...a,
+      id: a._id,
+      scholarship: a.scholarshipId,
+      student: a.studentId,
+      scholarshipId: a.scholarshipId?._id,
+      studentId: a.studentId?._id,
+    })));
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// POST /api/applications
+router.post('/', authMiddleware, async (req, res) => {
+  try {
+    const { scholarshipId } = req.body;
+    console.log(`[APPLICATION DEBUG] Received application request from user ${req.user.id} for scholarship ${scholarshipId}`);
+    
+    if (!scholarshipId) {
+      console.log(`[APPLICATION DEBUG] Missing scholarshipId`);
+      return res.status(400).json({ message: 'scholarshipId is required' });
+    }
+
+    const scholarship = await Scholarship.findById(scholarshipId);
+    if (!scholarship) {
+      console.log(`[APPLICATION DEBUG] Scholarship not found: ${scholarshipId}`);
+      return res.status(404).json({ message: 'Scholarship not found' });
+    }
+
+    const existing = await Application.findOne({ studentId: req.user.id, scholarshipId });
+    if (existing) {
+      console.log(`[APPLICATION DEBUG] User already applied: ${req.user.id}`);
+      return res.status(409).json({ message: 'Already applied to this scholarship' });
+    }
+
+    const app = await Application.create({ studentId: req.user.id, scholarshipId });
+    console.log(`[APPLICATION DEBUG] Application created: ${app._id}`);
+
+    await Scholarship.findByIdAndUpdate(scholarshipId, { $inc: { applicants: 1 } });
+    console.log(`[APPLICATION DEBUG] Updated applicant count for scholarship: ${scholarshipId}`);
+
+    await Notification.create({
+      userId: req.user.id,
+      title: 'Application Submitted ✅',
+      message: `Your application for "${scholarship.name}" has been submitted successfully.`,
+      type: 'success',
     });
-  res.json(apps);
-});
+    console.log(`[APPLICATION DEBUG] Notification created for user: ${req.user.id}`);
 
-// GET /api/applications — admin: all applications
-router.get('/', authMiddleware, adminOnly, (req, res) => {
-  const { status, search } = req.query;
-  let apps = db.applications.map((a) => {
-    const scholarship = db.scholarships.find((s) => s.id === a.scholarshipId);
-    const student = db.users.find((u) => u.id === a.studentId);
-    const { password: _, ...safeStudent } = student || {};
-    return { ...a, scholarship, student: safeStudent };
-  });
-
-  if (status && status !== 'all') apps = apps.filter((a) => a.status === status);
-  if (search) {
-    const q = search.toLowerCase();
-    apps = apps.filter((a) => a.student?.name?.toLowerCase().includes(q) || a.student?.email?.toLowerCase().includes(q));
+    res.status(201).json({ ...app.toObject(), id: app._id, scholarship });
+  } catch (err) {
+    console.error(`[APPLICATION DEBUG] Error in application process: ${err.message}`);
+    res.status(500).json({ message: err.message });
   }
-
-  res.json(apps);
 });
 
-// POST /api/applications — student applies
-router.post('/', authMiddleware, (req, res) => {
-  const { scholarshipId } = req.body;
-  if (!scholarshipId) return res.status(400).json({ message: 'scholarshipId is required' });
+// PATCH /api/applications/:id/status (admin)
+router.patch('/:id/status', authMiddleware, adminOnly, async (req, res) => {
+  try {
+    const { status, reviewNote } = req.body;
+    const validStatuses = ['pending', 'review', 'approved', 'rejected'];
+    if (!validStatuses.includes(status)) return res.status(400).json({ message: 'Invalid status' });
 
-  const scholarship = db.scholarships.find((s) => s.id === scholarshipId);
-  if (!scholarship) return res.status(404).json({ message: 'Scholarship not found' });
+    const app = await Application.findByIdAndUpdate(
+      req.params.id,
+      { status, reviewNote: reviewNote || '', updatedAt: new Date() },
+      { new: true }
+    ).populate('scholarshipId');
+    if (!app) return res.status(404).json({ message: 'Application not found' });
 
-  const existing = db.applications.find((a) => a.studentId === req.user.id && a.scholarshipId === scholarshipId);
-  if (existing) return res.status(409).json({ message: 'Already applied to this scholarship' });
+    const msgs = {
+      approved: `🎉 Congratulations! Your application for "${app.scholarshipId?.name}" has been APPROVED!`,
+      rejected: `Your application for "${app.scholarshipId?.name}" was not selected this time.`,
+      review:   `Your application for "${app.scholarshipId?.name}" is now under review.`,
+      pending:  `Your application for "${app.scholarshipId?.name}" has been moved back to pending.`,
+    };
+    await Notification.create({
+      userId: app.studentId,
+      title: `Application ${status.charAt(0).toUpperCase() + status.slice(1)}`,
+      message: msgs[status],
+      type: status === 'approved' ? 'success' : status === 'rejected' ? 'danger' : 'info',
+    });
 
-  const app = {
-    id: uuidv4(),
-    studentId: req.user.id,
-    scholarshipId,
-    status: 'pending',
-    reviewNote: '',
-    appliedAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
-  db.applications.push(app);
-  scholarship.applicants += 1;
-
-  // Notification
-  db.notifications.push({
-    id: uuidv4(),
-    userId: req.user.id,
-    title: 'Application Submitted ✅',
-    message: `Your application for "${scholarship.name}" has been submitted successfully.`,
-    type: 'success',
-    read: false,
-    createdAt: new Date().toISOString(),
-  });
-
-  res.status(201).json({ ...app, scholarship });
-});
-
-// PATCH /api/applications/:id/status — admin updates status
-router.patch('/:id/status', authMiddleware, adminOnly, (req, res) => {
-  const { status, reviewNote } = req.body;
-  const validStatuses = ['pending', 'review', 'approved', 'rejected'];
-  if (!validStatuses.includes(status)) {
-    return res.status(400).json({ message: 'Invalid status' });
+    res.json({ ...app.toObject(), id: app._id });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
-
-  const app = db.applications.find((a) => a.id === req.params.id);
-  if (!app) return res.status(404).json({ message: 'Application not found' });
-
-  app.status = status;
-  if (reviewNote !== undefined) app.reviewNote = reviewNote;
-  app.updatedAt = new Date().toISOString();
-
-  // Notify student
-  const scholarship = db.scholarships.find((s) => s.id === app.scholarshipId);
-  const statusMessages = {
-    approved: `🎉 Congratulations! Your application for "${scholarship?.name}" has been APPROVED!`,
-    rejected: `Your application for "${scholarship?.name}" was not selected this time.`,
-    review: `Your application for "${scholarship?.name}" is now under review.`,
-    pending: `Your application for "${scholarship?.name}" has been moved back to pending.`,
-  };
-  db.notifications.push({
-    id: uuidv4(),
-    userId: app.studentId,
-    title: `Application ${status.charAt(0).toUpperCase() + status.slice(1)}`,
-    message: statusMessages[status],
-    type: status === 'approved' ? 'success' : status === 'rejected' ? 'danger' : 'info',
-    read: false,
-    createdAt: new Date().toISOString(),
-  });
-
-  res.json(app);
 });
 
 module.exports = router;

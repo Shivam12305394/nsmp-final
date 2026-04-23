@@ -433,7 +433,8 @@ export function AdminApplications() {
   const updateStatus = async (status) => {
     setActioning(true);
     try {
-      await applicationAPI.updateStatus(reviewModal.id, { status, reviewNote: note });
+      const appId = reviewModal._id || reviewModal.id;
+      await applicationAPI.updateStatus(appId, { status, reviewNote: note });
       toast.success(`Application marked as ${status}!`);
       setReviewModal(null);
       setNote('');
@@ -485,7 +486,7 @@ export function AdminApplications() {
               ) : apps.length === 0 ? (
                 <tr><td colSpan={6} style={{ textAlign: 'center', color: 'var(--text3)', padding: 32 }}>No applications found</td></tr>
               ) : apps.map((a) => (
-                <tr key={a.id}>
+                <tr key={a._id || a.id}>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <div className="avatar-initial" style={{ borderRadius: 9 }}>
@@ -602,7 +603,7 @@ export function AdminStudents() {
               ) : students.length === 0 ? (
                 <tr><td colSpan={7} style={{ textAlign: 'center', color: 'var(--text3)', padding: 32 }}>No students found</td></tr>
               ) : students.map((s) => (
-                <tr key={s.id}>
+                <tr key={s._id || s.id}>
                   <td>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                       <div className="avatar-initial" style={{ borderRadius: 9 }}>{s.name[0]}</div>

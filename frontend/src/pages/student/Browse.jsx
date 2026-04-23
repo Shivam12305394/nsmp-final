@@ -337,10 +337,10 @@ export default function BrowseScholarships() {
 
           <div className="scholarship-grid">
             {displayList.map((s) => (
-              <div key={s.id} style={{ position: 'relative' }}>
+              <div key={s._id || s.id} style={{ position: 'relative' }}>
                 <ScholarshipCard
                   s={s}
-                  applied={appliedIds.has(s.id)}
+                  applied={appliedIds.has(s._id || s.id)}
                   onClick={setSelected}
                   matchScore={profileFilled ? s.matchScore : undefined}
                 />
@@ -365,10 +365,10 @@ export default function BrowseScholarships() {
               <button className="btn btn-ghost" onClick={() => downloadPDF(selected, profileFilled ? selectedWithScore?.matchScore : undefined)} style={{ gap: 6 }}>
                 ⬇ Download PDF
               </button>
-              {appliedIds.has(selected?.id) ? (
+              {appliedIds.has(selected?._id || selected?.id) ? (
                 <span className="tag tag-emerald" style={{ padding: '8px 16px', fontSize: 13 }}>Already Applied</span>
               ) : (
-                <button className="btn btn-primary" onClick={() => apply(selected.id)} disabled={applying}>
+                <button className="btn btn-primary" onClick={() => apply(selected._id || selected.id)} disabled={applying}>
                   {applying ? <><Spinner size={16} color="#fff" /> Applying...</> : 'Apply Now'}
                 </button>
               )}
