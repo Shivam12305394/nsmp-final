@@ -3,9 +3,10 @@ import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Chatbot from './components/Chatbot';
 import SplashScreen from './components/SplashScreen';
+import AppLoader from './components/AppLoader';
 
 import Landing from './pages/Landing';
-import { Login, Register } from './pages/Auth';
+import { Login, Register, ForgotPassword } from './pages/Auth';
 import Dashboard from './pages/student/Dashboard';
 import BrowseScholarships from './pages/student/Browse';
 import { SmartMatches, StudentApplications, StudentProfile, Documents } from './pages/student/StudentPages';
@@ -14,14 +15,14 @@ import { AdminDashboard, AdminScholarships, AdminApplications, AdminStudents, An
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
   const location = useLocation();
-  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg)' }} />;
+  if (loading) return <AppLoader />;
   if (!user) return <Navigate to="/login" state={{ from: location }} replace />;
   return children;
 }
 
 function AdminRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg)' }} />;
+  if (loading) return <AppLoader />;
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== 'admin') return <Navigate to="/dashboard" replace />;
   return children;
@@ -29,7 +30,7 @@ function AdminRoute({ children }) {
 
 function StudentRoute({ children }) {
   const { user, loading } = useAuth();
-  if (loading) return <div style={{ minHeight: '100vh', background: 'var(--bg)' }} />;
+  if (loading) return <AppLoader />;
   if (!user) return <Navigate to="/login" replace />;
   if (user.role === 'admin') return <Navigate to="/dashboard" replace />;
   return children;
@@ -52,6 +53,7 @@ function SmartApplications() {
 // Redirect only after loading completes and a logged-in user is confirmed.
 function PublicPage({ children }) {
   const { user, loading } = useAuth();
+  if (loading) return <AppLoader />;
   if (!loading && user) return <Navigate to="/dashboard" replace />;
   return children;
 }
@@ -64,6 +66,7 @@ function AppRoutes() {
         <Route path="/" element={<PublicPage><Landing /></PublicPage>} />
         <Route path="/login" element={<PublicPage><Login /></PublicPage>} />
         <Route path="/register" element={<PublicPage><Register /></PublicPage>} />
+        <Route path="/forgot-password" element={<PublicPage><ForgotPassword /></PublicPage>} />
         <Route path="/dashboard" element={<PrivateRoute><SmartDashboard /></PrivateRoute>} />
         <Route path="/scholarships" element={<PrivateRoute><SmartScholarships /></PrivateRoute>} />
         <Route path="/applications" element={<PrivateRoute><SmartApplications /></PrivateRoute>} />

@@ -4,6 +4,7 @@ import { ScholarshipCard, SearchBar, Modal, Spinner, AmountChip, EmptyState } fr
 import { scholarshipAPI, applicationAPI } from '../../utils/api';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { jsPDF } from 'jspdf';
 
 // Client-side match score — mirrors backend logic
 function calcMatch(s, profile) {
@@ -27,6 +28,7 @@ function calcMatch(s, profile) {
 
 const CATEGORIES = ['', 'General', 'OBC', 'SC', 'ST', 'EWS'];
 const COURSES = ['', 'Engineering', 'Medical', 'Science', 'Commerce', 'Arts', 'Law', 'Pharmacy'];
+const SOURCES = ['', 'Government', 'State', 'Private', 'International'];
 const SORTS = [
   { value: '', label: 'Default' },
   { value: 'match', label: '🎯 Profile Match' },
@@ -48,6 +50,7 @@ export default function BrowseScholarships() {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('');
   const [course, setCourse] = useState('');
+  const [source, setSource] = useState('');
   const [sort, setSort] = useState('');
 
   const profile = user?.profile || null;
@@ -64,15 +67,111 @@ export default function BrowseScholarships() {
 
   useEffect(fetchAll, [search, category, course, sort]);
 
-  // Attach match scores + sort by match if selected
+  const sanitize = (str) => String(str || 'N/A').replace(/₹/g, 'Rs.').replace(/[^\x00-\x7F]/g, '');
+
+  const downloadPDF = (s, matchScore) => {
+    const doc = new jsPDF();
+    const pageW = doc.internal.pageSize.getWidth();
+    doc.setFillColor(30, 30, 46);
+    doc.rect(0, 0, pageW, 40, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('NSMP - Scholarship Details', 14, 18);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('National Scholarship Matching Portal', 14, 28);
+    doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')}`, pageW - 14, 28, { align: 'right' });
+
+    let y = 52;
+    doc.setTextColor(30, 30, 46);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    const nameLines = doc.splitTextToSize(s.name, pageW - 28);
+    doc.text(nameLines, 14, y);
+    y += nameLines.length * 8 + 2;
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 100, 120);
+    doc.text(s.provider, 14, y);
+    y += 10;
+
+    if (matchScore !== undefined) {
+      const scoreColor = matchScore >= 80 ? [52, 211, 153] : matchScore >= 50 ? [34, 211, 238] : [245, 158, 11];
+      doc.setFillColor(...scoreColor);
+      doc.roundedRect(14, y, 80, 14, 3, 3, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`AI Match Score: ${matchScore}%`, 18, y + 9);
+      y += 22;
+    }
+
+    const fields = [
+      ['Amount', `Rs. ${s.amount.toLocaleString('en-IN')} per year`],
+      ['Deadline', new Date(s.deadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })],
+      ['Source', s.source || 'Government'],
+      ['Location', s.location],
+      ['Min. Marks', `${s.minMarks}%`],
+      ['Max. Income', `Rs. ${(s.maxIncome / 100000).toFixed(1)} Lakh/year`],
+      ['Gender', s.gender],
+      ['Categories', s.categories?.join(', ')],
+      ['Courses', s.courses?.join(', ')],
+    ];
+
+    doc.setDrawColor(220, 220, 235);
+    doc.setLineWidth(0.3);
+    doc.line(14, y, pageW - 14, y);
+    y += 8;
+
+    fields.forEach(([label, value]) => {
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(100, 100, 120);
+      doc.text(label.toUpperCase(), 14, y);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(30, 30, 46);
+      doc.setFontSize(10);
+      const valLines = doc.splitTextToSize(sanitize(value), pageW - 80);
+      doc.text(valLines, 80, y);
+      y += Math.max(valLines.length * 6, 8) + 2;
+    });
+
+    y += 4;
+    doc.setDrawColor(220, 220, 235);
+    doc.line(14, y, pageW - 14, y);
+    y += 10;
+
+    [['Eligibility Criteria', s.eligibility], ['Description', s.description], ['Benefits', s.benefits]].forEach(([heading, text]) => {
+      if (!text) return;
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(30, 30, 46);
+      doc.text(heading, 14, y);
+      y += 7;
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(60, 60, 80);
+      const lines = doc.splitTextToSize(sanitize(text), pageW - 28);
+      if (y + lines.length * 6 > 270) { doc.addPage(); y = 20; }
+      doc.text(lines, 14, y);
+      y += lines.length * 6 + 10;
+    });
+
+    doc.save(`${s.name.replace(/[^a-z0-9]/gi, '_')}_NSMP.pdf`);
+    toast.success('PDF downloaded!');
+  };
+
+  // Attach match scores + filter by source + sort by match if selected
   const displayList = useMemo(() => {
-    const withScore = scholarships.map((s) => ({ ...s, matchScore: calcMatch(s, profile) }));
-    if (sort === 'match') return [...withScore].sort((a, b) => b.matchScore - a.matchScore);
-    return withScore;
-  }, [scholarships, profile, sort]);
+    let list = scholarships.map((s) => ({ ...s, matchScore: calcMatch(s, profile) }));
+    if (source) list = list.filter((s) => s.source === source);
+    if (sort === 'match') return [...list].sort((a, b) => b.matchScore - a.matchScore);
+    return list;
+  }, [scholarships, profile, sort, source]);
 
   const appliedIds = new Set(myApps.map((a) => a.scholarshipId));
-  const activeFilterCount = [category, course, sort].filter(Boolean).length;
+  const activeFilterCount = [category, course, sort, source].filter(Boolean).length;
   const selectedWithScore = selected ? { ...selected, matchScore: calcMatch(selected, profile) } : null;
   const featuredCount = displayList.filter((s) => s.featured).length;
   const appliedCount = displayList.filter((s) => appliedIds.has(s.id)).length;
@@ -82,6 +181,7 @@ export default function BrowseScholarships() {
     setSearch('');
     setCategory('');
     setCourse('');
+    setSource('');
     setSort('');
   };
 
@@ -174,6 +274,10 @@ export default function BrowseScholarships() {
               <option value="">All Courses</option>
               {COURSES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
+            <select className="form-select" value={source} onChange={(e) => setSource(e.target.value)}>
+              <option value="">All Sources</option>
+              {SOURCES.filter(Boolean).map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
             <select className="form-select" value={sort} onChange={(e) => setSort(e.target.value)}>
               {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
@@ -189,6 +293,10 @@ export default function BrowseScholarships() {
               <option value="">All Courses</option>
               {COURSES.filter(Boolean).map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
+            <select className="form-select" value={source} onChange={(e) => setSource(e.target.value)}>
+              <option value="">All Sources</option>
+              {SOURCES.filter(Boolean).map((s) => <option key={s} value={s}>{s}</option>)}
+            </select>
             <select className="form-select" value={sort} onChange={(e) => setSort(e.target.value)}>
               {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
             </select>
@@ -199,6 +307,7 @@ export default function BrowseScholarships() {
               {search && <span className="tag tag-neutral">Search: {search}</span>}
               {category && <span className="tag tag-primary">{category}</span>}
               {course && <span className="tag tag-neutral">{course}</span>}
+              {source && <span className="tag tag-amber">{source}</span>}
               {sort && <span className="tag tag-emerald">{SORTS.find((s) => s.value === sort)?.label || sort}</span>}
             </div>
           )}
@@ -253,6 +362,9 @@ export default function BrowseScholarships() {
           selected && (
             <>
               <button className="btn btn-ghost" onClick={() => setSelected(null)}>Close</button>
+              <button className="btn btn-ghost" onClick={() => downloadPDF(selected, profileFilled ? selectedWithScore?.matchScore : undefined)} style={{ gap: 6 }}>
+                ⬇ Download PDF
+              </button>
               {appliedIds.has(selected?.id) ? (
                 <span className="tag tag-emerald" style={{ padding: '8px 16px', fontSize: 13 }}>Already Applied</span>
               ) : (
@@ -307,11 +419,12 @@ export default function BrowseScholarships() {
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
               {[
                 { label: 'Min. Marks', value: `${selected.minMarks}%` },
                 { label: 'Max. Income', value: `₹${(selected.maxIncome / 100000).toFixed(1)}L/yr` },
                 { label: 'Deadline', value: new Date(selected.deadline).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) },
+                { label: 'Source', value: selected.source || 'Government' },
                 { label: 'Location', value: selected.location },
                 { label: 'Applicants', value: selected.applicants?.toLocaleString() },
                 { label: 'Gender', value: selected.gender },

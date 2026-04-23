@@ -209,6 +209,12 @@ export function ScholarshipCard({ s, onClick, applied, matchScore }) {
       </div>
 
       <div className="sc-tags">
+        {s.source && s.source !== 'Government' && (
+          <span className={`tag ${
+            s.source === 'International' ? 'tag-amber' :
+            s.source === 'Private' ? 'tag-rose' : 'tag-emerald'
+          }`}>{s.source}</span>
+        )}
         {s.categories.slice(0, 2).map((c) => (
           <span key={c} className="tag tag-primary">{c}</span>
         ))}

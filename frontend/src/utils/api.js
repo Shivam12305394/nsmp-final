@@ -12,14 +12,17 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 globally
+// Handle 401 globally — skip redirect for /auth routes to avoid loops
 api.interceptors.response.use(
   (res) => res,
   (err) => {
     if (err.response?.status === 401) {
-      localStorage.removeItem('nsmp_token');
-      localStorage.removeItem('nsmp_user');
-      window.location.href = '/login';
+      const url = err.config?.url || '';
+      if (!url.includes('/auth/')) {
+        localStorage.removeItem('nsmp_token');
+        localStorage.removeItem('nsmp_user');
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(err);
   }
@@ -33,6 +36,9 @@ export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   me: () => api.get('/auth/me'),
   updateProfile: (data) => api.put('/auth/profile', data),
+  forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
+  verifyResetOtp: (email, otp) => api.post('/auth/verify-reset-otp', { email, otp }),
+  resetPassword: (email, otp, newPassword) => api.post('/auth/reset-password', { email, otp, newPassword }),
 };
 
 export const scholarshipAPI = {
