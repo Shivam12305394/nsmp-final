@@ -163,8 +163,8 @@ export function SmartMatches() {
   };
 
   const strongMatches = matches.filter((m) => m.matchScore >= 85).length;
-  const appliedCount = matches.filter((m) => appliedIds.has(m.id)).length;
-  const readyToApply = matches.filter((m) => !appliedIds.has(m.id)).length;
+  const appliedCount = matches.filter((m) => appliedIds.has(m._id || m.id)).length;
+  const readyToApply = matches.filter((m) => !appliedIds.has(m._id || m.id)).length;
 
   return (
     <AppLayout title="AI Smart Matches" subtitle="Scholarships ranked by compatibility with your profile">
@@ -261,11 +261,11 @@ export function SmartMatches() {
                       <button className="btn btn-ghost btn-sm" onClick={() => downloadPDF(m)} title="Download PDF">
                         ⬇ PDF
                       </button>
-                      {appliedIds.has(m.id) ? (
+                      {appliedIds.has(m._id || m.id) ? (
                         <span className="tag tag-emerald" style={{ padding: '8px 14px', fontSize: 12 }}>✓ Applied</span>
                       ) : (
-                        <button className="btn btn-primary btn-sm" onClick={() => apply(m.id)} disabled={applying === m.id}>
-                          {applying === m.id ? <><Spinner size={14} color="#fff" /> Applying...</> : '⚡ Apply Now'}
+                        <button className="btn btn-primary btn-sm" onClick={() => apply(m._id || m.id)} disabled={applying === (m._id || m.id)}>
+                          {applying === (m._id || m.id) ? <><Spinner size={14} color="#fff" /> Applying...</> : '⚡ Apply Now'}
                         </button>
                       )}
                     </div>

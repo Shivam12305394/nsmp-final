@@ -57,7 +57,7 @@ nsmp/
 cd backend
 npm install
 node server.js
-# Runs at http://localhost:5000
+# Runs at http://localhost:5001 (Updated from 5000 to avoid conflicts)
 ```
 
 ### Terminal 2 — Frontend
@@ -75,7 +75,7 @@ npm run dev
 | Role | Email | Password |
 |------|-------|----------|
 | **Admin** | admin@nsmp.gov.in | admin123 |
-| **Student** | Register → OTP: **1234** | (your choice) |
+| **Student** | Register → **Check Email** | (your choice) |
 
 ---
 
