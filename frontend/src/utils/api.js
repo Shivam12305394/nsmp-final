@@ -58,6 +58,13 @@ export const applicationAPI = {
   updateStatus: (id, data) => api.patch(`/applications/${id}/status`, data),
 };
 
+export const fraudAPI = {
+  runScan:   ()   => api.post('/fraud/run-scan'),
+  getAlerts: ()   => api.get('/fraud/alerts'),
+  dismiss:   (id) => api.patch(`/fraud/dismiss/${id}`),
+  blacklist: (id) => api.patch(`/fraud/blacklist/${id}`),
+};
+
 export const documentAPI = {
   getAll:  ()         => api.get('/documents'),
   upload:  (formData) => api.post('/documents/upload-document', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),

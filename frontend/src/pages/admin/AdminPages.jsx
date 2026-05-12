@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { StatCard, Badge, Spinner, Modal, ConfirmDialog, SearchBar, EmptyState } from '../../components/ui';
-import { scholarshipAPI, applicationAPI, userAPI } from '../../utils/api';
+import { scholarshipAPI, applicationAPI, userAPI, fraudAPI } from '../../utils/api';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
 
@@ -777,29 +777,63 @@ export function Analytics() {
 }
 
 export function FraudDetection() {
-  const [scanning, setScanning] = useState(false);
+  const [scanning, setScanning]   = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
-  const [aiReport, setAiReport] = useState('');
-  const [alerts, setAlerts] = useState([
-    { id: '1', student: 'Rahul Kumar', type: 'Duplicate Documents', risk: 'high', detail: 'Same Aadhaar number detected across 3 different accounts.', time: new Date().toISOString(), dismissed: false },
-    { id: '2', student: 'Priya Sharma', type: 'Income Anomaly', risk: 'medium', detail: 'Declared income ₹1.2L but bank statement shows ₹6.8L.', time: new Date().toISOString(), dismissed: false },
-    { id: '3', student: 'Amit Singh', type: 'Bulk Applications', risk: 'medium', detail: 'Applied to 11 scholarships within 2 hours.', time: new Date().toISOString(), dismissed: false },
-  ]);
+  const [loading, setLoading]     = useState(true);
+  const [aiReport, setAiReport]   = useState('');
+  const [alerts, setAlerts]       = useState([]);
+
+  const fetchAlerts = async () => {
+    try {
+      const res = await fraudAPI.getAlerts();
+      setAlerts(res.data);
+    } catch {
+      toast.error('Failed to load fraud alerts');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => { fetchAlerts(); }, []);
 
   const scan = async () => {
     setScanning(true);
-    await new Promise((r) => setTimeout(r, 2000));
+    try {
+      const res = await fraudAPI.runScan();
+      toast.success(res.data.message);
+      await fetchAlerts();
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Scan failed');
+    }
     setScanning(false);
-    toast.success('Fraud scan complete — 3 alerts found');
   };
 
-  const dismiss = (id) => setAlerts((prev) => prev.map((a) => a.id === id ? { ...a, dismissed: true } : a));
-  const blacklist = (id) => { toast.error('Student blacklisted'); dismiss(id); };
+  const dismiss = async (id) => {
+    try {
+      await fraudAPI.dismiss(id);
+      setAlerts((prev) => prev.map((a) => a._id === id ? { ...a, status: 'dismissed' } : a));
+      toast.success('Alert dismissed');
+    } catch {
+      toast.error('Failed to dismiss alert');
+    }
+  };
+
+  const blacklist = async (id) => {
+    try {
+      await fraudAPI.blacklist(id);
+      setAlerts((prev) => prev.map((a) => a._id === id ? { ...a, status: 'blacklisted' } : a));
+      toast.error('Student blacklisted');
+    } catch {
+      toast.error('Failed to blacklist student');
+    }
+  };
 
   const getAiAnalysis = async () => {
     setAiLoading(true);
     try {
-      const summary = alerts.filter((a) => !a.dismissed).map((a) => `${a.student}: ${a.type} (${a.risk} risk) - ${a.detail}`).join('\n');
+      const active = alerts.filter((a) => a.status === 'active');
+      if (!active.length) { toast('No active alerts to analyze'); setAiLoading(false); return; }
+      const summary = active.map((a) => `${a.studentName}: ${a.issue} (${a.riskLevel} risk) - ${a.detail}`).join('\n');
       const res = await api.post('/ai/fraud', { summary });
       setAiReport(res.data.reply || 'Analysis failed.');
     } catch (err) {
@@ -808,15 +842,15 @@ export function FraudDetection() {
     setAiLoading(false);
   };
 
-  const active = alerts.filter((a) => !a.dismissed);
-  const high = active.filter((a) => a.risk === 'high').length;
-  const medium = active.filter((a) => a.risk === 'medium').length;
-  const dismissed = alerts.filter((a) => a.dismissed).length;
-  const total = alerts.length;
-  const activeRate = total > 0 ? Math.round((active.length / total) * 100) : 0;
+  const active      = alerts.filter((a) => a.status === 'active');
+  const high        = active.filter((a) => a.riskLevel === 'high').length;
+  const medium      = active.filter((a) => a.riskLevel === 'medium').length;
+  const low         = active.filter((a) => a.riskLevel === 'low').length;
+  const dismissed   = alerts.filter((a) => a.status === 'dismissed' || a.status === 'blacklisted').length;
+  const activeRate  = alerts.length > 0 ? Math.round((active.length / alerts.length) * 100) : 0;
 
   const riskColor = { high: 'var(--rose)', medium: 'var(--amber)', low: 'var(--emerald)' };
-  const riskBg = { high: 'rgba(244,63,94,0.1)', medium: 'rgba(245,158,11,0.1)', low: 'rgba(16,185,129,0.1)' };
+  const riskBg    = { high: 'rgba(244,63,94,0.1)', medium: 'rgba(245,158,11,0.1)', low: 'rgba(16,185,129,0.1)' };
 
   return (
     <AppLayout title="Fraud Detection" subtitle="Monitor and investigate suspicious activities">
@@ -830,10 +864,10 @@ export function FraudDetection() {
       </div>
 
       <div className="stats-grid" style={{ marginBottom: 24 }}>
-        <StatCard icon="🔴" value={high} label="High Risk Alerts" bg="rgba(244,63,94,0.1)" />
-        <StatCard icon="🟡" value={medium} label="Medium Risk Alerts" bg="rgba(245,158,11,0.1)" />
-        <StatCard icon="🟢" value={0} label="Low Risk Alerts" bg="rgba(16,185,129,0.1)" />
-        <StatCard icon="✓" value={dismissed} label="Dismissed" bg="rgba(99,102,241,0.1)" />
+        <StatCard icon="🔴" value={high}      label="High Risk Alerts"   bg="rgba(244,63,94,0.1)" />
+        <StatCard icon="🟡" value={medium}    label="Medium Risk Alerts" bg="rgba(245,158,11,0.1)" />
+        <StatCard icon="🟢" value={low}       label="Low Risk Alerts"    bg="rgba(16,185,129,0.1)" />
+        <StatCard icon="✓"  value={dismissed} label="Dismissed"          bg="rgba(99,102,241,0.1)" />
       </div>
 
       <div className="admin-signal-grid">
@@ -862,26 +896,31 @@ export function FraudDetection() {
       )}
 
       <div className="incident-list">
-        {active.length === 0 ? (
-          <div className="card"><div style={{ padding: 48, textAlign: 'center', color: 'var(--text3)', fontSize: 14 }}>✅ No active fraud alerts</div></div>
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', padding: 48 }}><Spinner size={28} /></div>
+        ) : active.length === 0 ? (
+          <div className="card"><div style={{ padding: 48, textAlign: 'center', color: 'var(--text3)', fontSize: 14 }}>✅ No active fraud alerts — run a scan to check for suspicious activity</div></div>
         ) : active.map((a) => (
-          <div key={a.id} className="incident-card">
+          <div key={a._id} className="incident-card">
             <div className="incident-card-top">
-              <div style={{ width: 44, height: 44, borderRadius: 10, background: riskBg[a.risk], display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
-                {a.risk === 'high' ? '🚨' : '⚠️'}
+              <div style={{ width: 44, height: 44, borderRadius: 10, background: riskBg[a.riskLevel], display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0 }}>
+                {a.riskLevel === 'high' ? '🚨' : a.riskLevel === 'medium' ? '⚠️' : '📋'}
               </div>
               <div className="incident-card-copy">
                 <div className="incident-card-title">
-                  <div className="incident-card-name">{a.student}</div>
-                  <span style={{ fontSize: 11, padding: '3px 9px', background: riskBg[a.risk], color: riskColor[a.risk], borderRadius: 99, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>{a.risk} risk</span>
-                  <span className="tag tag-neutral" style={{ fontSize: 11 }}>{a.type}</span>
+                  <div className="incident-card-name">{a.studentName}</div>
+                  <span style={{ fontSize: 11, padding: '3px 9px', background: riskBg[a.riskLevel], color: riskColor[a.riskLevel], borderRadius: 99, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>{a.riskLevel} risk</span>
+                  <span className="tag tag-neutral" style={{ fontSize: 11 }}>{a.issue}</span>
                 </div>
                 <div className="incident-card-desc">{a.detail}</div>
-                <div className="incident-card-time">{new Date(a.time).toLocaleString('en-IN')}</div>
+                {a.aiExplanation && (
+                  <div style={{ fontSize: 12, color: 'var(--primary-h)', marginTop: 4, fontStyle: 'italic' }}>🤖 {a.aiExplanation}</div>
+                )}
+                <div className="incident-card-time">{new Date(a.createdAt).toLocaleString('en-IN')}</div>
               </div>
               <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-                <button className="btn btn-ghost btn-sm" onClick={() => dismiss(a.id)}>Dismiss</button>
-                <button className="btn btn-rose btn-sm" onClick={() => blacklist(a.id)}>Blacklist</button>
+                <button className="btn btn-ghost btn-sm" onClick={() => dismiss(a._id)}>Dismiss</button>
+                <button className="btn btn-rose btn-sm" onClick={() => blacklist(a._id)}>Blacklist</button>
               </div>
             </div>
           </div>

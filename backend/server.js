@@ -18,6 +18,7 @@ app.use('/api/applications', require('./routes/applications'));
 app.use('/api/users',        require('./routes/users'));
 app.use('/api/ai',           require('./routes/ai'));
 app.use('/api/documents',    require('./routes/documents'));
+app.use('/api/fraud',        require('./routes/fraud'));
 app.use('/uploads',          express.static(path.join(__dirname, 'uploads')));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' }));
