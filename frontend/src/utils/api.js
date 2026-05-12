@@ -58,6 +58,12 @@ export const applicationAPI = {
   updateStatus: (id, data) => api.patch(`/applications/${id}/status`, data),
 };
 
+export const documentAPI = {
+  getAll:  ()         => api.get('/documents'),
+  upload:  (formData) => api.post('/documents/upload-document', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
+  delete:  (id)       => api.delete(`/documents/${id}`),
+};
+
 export const userAPI = {
   getAll: (params) => api.get('/users', { params }),
   getAnalytics: () => api.get('/users/analytics'),

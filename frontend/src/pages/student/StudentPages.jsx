@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { AppLayout } from '../../components/layout/AppLayout';
 import { MatchRing, ScholarshipCard, Badge, Spinner, EmptyState, Alert, Toggle } from '../../components/ui';
-import { scholarshipAPI, applicationAPI, authAPI } from '../../utils/api';
+import { scholarshipAPI, applicationAPI, authAPI, documentAPI } from '../../utils/api';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import { jsPDF } from 'jspdf';
@@ -690,26 +690,46 @@ export function StudentProfile() {
 export function Documents() {
   const [files, setFiles] = useState([]);
   const [dragging, setDragging] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const REQUIRED = [
     'Class 12 Marksheet', 'Income Certificate', 'Category Certificate',
     'Aadhaar Card', 'Bank Passbook', 'Passport Photo', 'College Admission Letter', 'Domicile Certificate',
   ];
 
-  const handleFiles = (fileList) => {
-    const newFiles = Array.from(fileList).map((f) => ({
-      id: Math.random().toString(36).slice(2),
-      name: f.name,
-      size: (f.size / 1024).toFixed(1) + ' KB',
-      type: f.type,
-      status: 'pending',
-      uploadedAt: new Date().toISOString(),
-    }));
-    setFiles((prev) => [...prev, ...newFiles]);
-    // Simulate auto-verify after 2s
-    setTimeout(() => {
-      setFiles((prev) => prev.map((f) => newFiles.find((n) => n.id === f.id) ? { ...f, status: 'verified' } : f));
-    }, 2000);
+  useEffect(() => {
+    documentAPI.getAll()
+      .then((r) => setFiles(r.data))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleFiles = async (fileList) => {
+    const fileArr = Array.from(fileList);
+    for (const f of fileArr) {
+      const formData = new FormData();
+      formData.append('file', f);
+      try {
+        const res = await documentAPI.upload(formData);
+        setFiles((prev) => [res.data, ...prev]);
+        // Poll for verified status after 2.5s
+        setTimeout(async () => {
+          const updated = await documentAPI.getAll();
+          setFiles(updated.data);
+        }, 2500);
+      } catch (err) {
+        toast.error(err.response?.data?.message || `Failed to upload ${f.name}`);
+      }
+    }
+  };
+
+  const deleteFile = async (id) => {
+    try {
+      await documentAPI.delete(id);
+      setFiles((prev) => prev.filter((x) => x._id !== id));
+    } catch {
+      toast.error('Failed to delete file');
+    }
   };
 
   const isDocUploaded = (doc) => files.some((f) => f.name.toLowerCase().includes(doc.toLowerCase().split(' ')[0]));
@@ -719,7 +739,8 @@ export function Documents() {
 
   return (
     <AppLayout title="Documents" subtitle="Upload and manage your scholarship documents">
-      <div className="docs-shell">
+      {loading ? <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 80 }}><Spinner size={32} /></div> : null}
+      <div className="docs-shell" style={{ display: loading ? 'none' : undefined }}>
         <div className="docs-hero card">
           <div className="docs-hero-body">
             <div>
@@ -814,9 +835,9 @@ export function Documents() {
                   </thead>
                   <tbody>
                     {files.map((f) => (
-                      <tr key={f.id}>
+                      <tr key={f._id}>
                         <td style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                          <span style={{ fontSize: 18 }}>{f.type.includes('pdf') ? '📄' : '🖼️'}</span>
+                          <span style={{ fontSize: 18 }}>{f.mimeType?.includes('pdf') ? '📄' : '🖼️'}</span>
                           <span style={{ fontSize: 13 }}>{f.name}</span>
                         </td>
                         <td style={{ color: 'var(--text3)', fontSize: 12 }}>{f.size}</td>
@@ -828,7 +849,7 @@ export function Documents() {
                         <td style={{ color: 'var(--text3)', fontSize: 12 }}>{new Date(f.uploadedAt).toLocaleDateString('en-IN')}</td>
                         <td>
                           <button className="btn btn-ghost btn-sm" style={{ color: 'var(--rose)' }}
-                            onClick={() => setFiles((prev) => prev.filter((x) => x.id !== f.id))}>✕</button>
+                            onClick={() => deleteFile(f._id)}>✕</button>
                         </td>
                       </tr>
                     ))}

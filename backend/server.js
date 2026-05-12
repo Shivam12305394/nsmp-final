@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors    = require('cors');
 const mongoose = require('mongoose');
+const path    = require('path');
 
 const app  = express();
 const PORT = process.env.PORT || 5000;
@@ -16,6 +17,8 @@ app.use('/api/scholarships', require('./routes/scholarships'));
 app.use('/api/applications', require('./routes/applications'));
 app.use('/api/users',        require('./routes/users'));
 app.use('/api/ai',           require('./routes/ai'));
+app.use('/api/documents',    require('./routes/documents'));
+app.use('/uploads',          express.static(path.join(__dirname, 'uploads')));
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' }));
 
